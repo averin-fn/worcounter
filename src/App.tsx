@@ -3,10 +3,13 @@ import { Settings, BarChart3, Dumbbell } from 'lucide-react';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
-import ExerciseCounter from './components/ExerciseCounter';
-import GoalProgress from './components/GoalProgress';
 import StatsChart from './components/StatsChart';
 import StatsSummary from './components/StatsSummary';
+import DayProgressSummary from './components/DayProgressSummary';
+import QuickActions from './components/QuickActions';
+import Achievements from './components/Achievements';
+import ThemeSwitcher from './components/ThemeSwitcher';
+
 
 import { EXERCISES } from './constants';
 import { UserSettings, WorkoutRecord } from './types';
@@ -27,6 +30,7 @@ function App() {
   const [records, setRecords] = useState<WorkoutRecord[]>(loadRecords());
   const [exerciseCounts, setExerciseCounts] = useState<{[key: string]: number}>({});
   const [saveNotification, setSaveNotification] = useState<string | null>(null);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
 
   const today = new Date();
   const todayStr = format(today, 'yyyy-MM-dd');
@@ -47,6 +51,8 @@ function App() {
       setExerciseCounts({});
     }
   }, [todayRecord]);
+
+
 
   const handleExerciseCountChange = (exerciseId: string, count: number) => {
     const newCounts = {
@@ -96,35 +102,66 @@ function App() {
     saveSettings(newSettings);
   };
 
+  const handleThemeToggle = () => {
+    setIsDarkTheme(!isDarkTheme);
+  };
+
+  const handleQuickAdd = (exerciseId: string, count: number) => {
+    const currentCount = exerciseCounts[exerciseId] || 0;
+    handleExerciseCountChange(exerciseId, currentCount + count);
+  };
+
+  // Calculate achievements data
+  const totalWorkouts = records.length;
+  const streakDays = calculateStreakDays(records, settings);
+
+  function calculateStreakDays(records: WorkoutRecord[], settings: UserSettings): number {
+    if (records.length === 0) return 0;
+    
+    const sortedRecords = [...records].sort((a, b) => b.date.localeCompare(a.date));
+    let streak = 0;
+    let currentDate = new Date();
+    
+    for (const record of sortedRecords) {
+      const recordDate = new Date(record.date);
+      const diffDays = Math.floor((currentDate.getTime() - recordDate.getTime()) / (1000 * 60 * 60 * 24));
+      
+      if (diffDays <= streak * settings.trainingFrequency + settings.trainingFrequency - 1) {
+        streak++;
+        currentDate = recordDate;
+      } else {
+        break;
+      }
+    }
+    
+    return streak;
+  }
+
   return (
-    <div className="app-container">
-      {/* Fixed Top Progress Bar - показываем на всех страницах */}
-      <header className="fixed-progress-header">
+    <div className={`app-container ${isDarkTheme ? 'dark-theme' : ''}`}>
+      {/* Fixed Top Header */}
+      <header className="fixed-header">
         {activeTab === 'workout' ? (
-          <GoalProgress
-            currentPoints={currentPoints}
-            goalPoints={settings.currentGoal}
-            isTrainingDay={isTodayTrainingDay}
-            compact={true}
-            exerciseCounts={exerciseCounts}
-          />
+          <div className="header-title">
+            <h1 style={{ color: 'white', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
+              Тренировка
+            </h1>
+          </div>
         ) : activeTab === 'stats' ? (
           <div className="header-title">
             <h1 style={{ color: 'white', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
               Статистика
             </h1>
-            <div className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-              {format(today, 'd MMMM yyyy', { locale: ru })}
-            </div>
           </div>
         ) : (
           <div className="header-title">
             <h1 style={{ color: 'white', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
               Настройки
             </h1>
-            <div className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-              {format(today, 'd MMMM yyyy', { locale: ru })}
-            </div>
+            <ThemeSwitcher 
+              isDarkTheme={isDarkTheme}
+              onThemeToggle={handleThemeToggle}
+            />
           </div>
         )}
       </header>
@@ -135,19 +172,35 @@ function App() {
           <div className="workout-content">
             {isTodayTrainingDay && (
               <div className="space-y-4">
-                {EXERCISES.map(exercise => (
-                  <ExerciseCounter
-                    key={exercise.id}
-                    exercise={exercise}
-                    count={exerciseCounts[exercise.id] || 0}
-                    onCountChange={(count) => handleExerciseCountChange(exercise.id, count)}
-                  />
-                ))}
+                {/* Day Progress Summary - Combined progress and day stats */}
+                <DayProgressSummary
+                  currentPoints={currentPoints}
+                  goalPoints={settings.currentGoal}
+                  exerciseCounts={exerciseCounts}
+                  isTrainingDay={isTodayTrainingDay}
+                />
+                
+                {/* Quick Actions */}
+                <QuickActions
+                  onQuickAdd={handleQuickAdd}
+                />
+              </div>
+            )}
+            
+            {!isTodayTrainingDay && (
+              <div className="rest-day-message">
+                <h2>Сегодня день отдыха</h2>
+                <p>Следующая тренировка запланирована на завтра</p>
               </div>
             )}
           </div>
         ) : activeTab === 'stats' ? (
           <div className="stats-content">
+            <Achievements
+              totalPoints={currentPoints}
+              streakDays={streakDays}
+              totalWorkouts={totalWorkouts}
+            />
             <StatsSummary stats={stats} />
             <StatsChart data={stats} />
           </div>

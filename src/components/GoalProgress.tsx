@@ -1,7 +1,5 @@
 import React from 'react';
 import { Target } from 'lucide-react';
-import { format } from 'date-fns';
-import { ru } from 'date-fns/locale';
 import { EXERCISES } from '../constants';
 
 interface GoalProgressProps {
@@ -41,35 +39,29 @@ const GoalProgress: React.FC<GoalProgressProps> = ({ currentPoints, goalPoints, 
 
     return segments;
   };
-
   const progressSegments = getProgressSegments();
-  const today = new Date();
 
   if (!isTrainingDay) {
     if (compact) {
       return (
         <div className="progress-container">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div 
-                style={{
-                  width: '20px',
-                  height: '20px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: '0.5rem'
-                }}
-              >
-                <Target size={12} color="white" />
-              </div>
-              <span className="progress-title" style={{ fontSize: '1rem' }}>День отдыха</span>
+          <div className="flex items-center justify-between">          <div className="flex items-center">
+            <div 
+              style={{
+                width: '20px',
+                height: '20px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: '0.5rem'
+              }}
+            >
+              <Target size={12} color="white" />
             </div>
-            <div className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-              {format(today, 'd MMM', { locale: ru })}
-            </div>
+            <span className="progress-title" style={{ fontSize: '1rem' }}>День отдыха</span>
+          </div>
           </div>
         </div>
       );
@@ -94,34 +86,10 @@ const GoalProgress: React.FC<GoalProgressProps> = ({ currentPoints, goalPoints, 
 
   if (compact) {
     return (
-      <div className="progress-container">
-        <div className="progress-header">
-          <div className="flex items-center">
-            <div 
-              style={{
-                width: '20px',
-                height: '20px',
-                borderRadius: '50%',
-                background: isGoalReached 
-                  ? 'linear-gradient(135deg, #10b981 0%, #34d399 100%)'
-                  : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: '0.5rem'
-              }}
-            >
-              <Target size={12} color="white" />
-            </div>
-            <h2 className="progress-title">Цель: {currentPoints}/{goalPoints}</h2>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="progress-percentage">
-              {Math.round(progress)}%
-            </div>
-            <div className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-              {format(today, 'd MMM', { locale: ru })}
-            </div>
+      <div className="progress-container">        <div className="progress-header">
+          <h2 className="progress-title">Цель: {currentPoints}/{goalPoints}</h2>
+          <div className="progress-percentage">
+            {Math.round(progress)}%
           </div>
         </div>
           <div className="progress-bar" style={{ marginTop: '0.5rem' }}>
