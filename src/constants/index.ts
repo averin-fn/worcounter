@@ -7,17 +7,16 @@ export const EXERCISES: Exercise[] = [
     points: 3,
     icon: 'ChevronUp',
     color: '#FF6B6B' // Красный
-  },
-  {
+  },  {
     id: 'dips',
-    name: 'Отжимания на брусьях',
+    name: 'Брусья',
     points: 2,
     icon: 'ArrowUp',
     color: '#4ECDC4' // Бирюзовый
   },
   {
     id: 'pushups',
-    name: 'Отжимания от пола',
+    name: 'Отжимания',
     points: 1,
     icon: 'ArrowDown',
     color: '#45B7D1' // Синий

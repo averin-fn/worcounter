@@ -325,9 +325,7 @@ function App() {
             <span>Настройки</span>
           </button>
         </div>
-      </nav>
-
-      {/* Save Notification */}
+      </nav>      {/* Save Notification */}
       {saveNotification && (
         <div className="save-notification">
           {saveNotification}
