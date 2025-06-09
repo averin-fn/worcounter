@@ -544,8 +544,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   z-index: 40;
   padding: 1rem;
@@ -555,7 +554,19 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  text-align: center;
+  width: 100%;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-date {
+  display: flex;
+  align-items: center;
+  opacity: 0.8;
 }
 
 /* Main content with padding to avoid header overlap */
@@ -2508,6 +2519,18 @@ body {
   font-weight: 700;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
+}
+
+/* Remove spinner arrows from number input */
+.count-input::-webkit-outer-spin-button,
+.count-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.count-input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 .count-input:focus {

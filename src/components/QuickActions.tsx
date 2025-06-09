@@ -12,7 +12,7 @@ const QuickActions: React.FC<QuickActionsProps> = ({
   const [selectedExercise, setSelectedExercise] = useState(EXERCISES[0].id);
   const [count, setCount] = useState(1);
 
-  const quickCounts = [1, 5, 10];
+  const quickCounts = [1, 5, 10, 20];
 
   const handleAdd = () => {
     if (count > 0) {

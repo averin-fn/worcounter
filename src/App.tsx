@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, BarChart3, Dumbbell } from 'lucide-react';
+import { Settings, BarChart3, Dumbbell, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
@@ -143,21 +143,42 @@ function App() {
       <header className="fixed-header">
         {activeTab === 'workout' ? (
           <div className="header-title">
-            <h1 style={{ color: 'white', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
-              Тренировка
-            </h1>
+            <div className="header-left">
+              <Dumbbell size={24} style={{ color: 'white' }} />
+              <h1 style={{ color: 'white', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
+                Тренировка
+              </h1>
+            </div>
+            <div className="header-date">
+              <Calendar size={20} style={{ color: 'white', marginRight: '0.5rem' }} />
+              <span style={{ color: 'white', fontSize: '0.9rem' }}>
+                {format(today, 'dd.MM.yyyy', { locale: ru })}
+              </span>
+            </div>
           </div>
         ) : activeTab === 'stats' ? (
           <div className="header-title">
-            <h1 style={{ color: 'white', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
-              Статистика
-            </h1>
+            <div className="header-left">
+              <BarChart3 size={24} style={{ color: 'white' }} />
+              <h1 style={{ color: 'white', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
+                Статистика
+              </h1>
+            </div>
+            <div className="header-date">
+              <Calendar size={20} style={{ color: 'white', marginRight: '0.5rem' }} />
+              <span style={{ color: 'white', fontSize: '0.9rem' }}>
+                {format(today, 'dd.MM.yyyy', { locale: ru })}
+              </span>
+            </div>
           </div>
         ) : (
           <div className="header-title">
-            <h1 style={{ color: 'white', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
-              Настройки
-            </h1>
+            <div className="header-left">
+              <Settings size={24} style={{ color: 'white' }} />
+              <h1 style={{ color: 'white', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
+                Настройки
+              </h1>
+            </div>
             <ThemeSwitcher 
               isDarkTheme={isDarkTheme}
               onThemeToggle={handleThemeToggle}
