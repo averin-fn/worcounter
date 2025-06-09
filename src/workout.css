@@ -1,0 +1,1289 @@
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth; /* Плавный скролл */
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden; /* Убираем общий скролл */
+  touch-action: manipulation;
+  padding: 0; /* Убираем все отступы */
+  scroll-behavior: smooth; /* Плавный скролл */
+}
+
+#root {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden; /* Убираем скролл с root */
+}
+
+/* Utility classes for modern mobile design */
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.app-container {
+  height: 100vh; /* Фиксированная высота */
+  width: 100vw; /* Полная ширина экрана */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 0; /* Убираем border-radius */
+  margin: 0; /* Убираем все отступы */
+  position: relative;
+  overflow: hidden; /* Убираем скролл с контейнера */
+  display: flex;
+  flex-direction: column;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.gap-1 {
+  gap: 0.25rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.p-1 {
+  padding: 0.25rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.p-6 {
+  padding: 1.5rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mb-6 {
+  margin-bottom: 0; /* Убираем нижний отступ */
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-base {
+  font-size: 1rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-extrabold {
+  font-weight: 800;
+}
+
+/* Modern color scheme */
+.bg-white {
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+.bg-glass {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bg-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-secondary {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.bg-success {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.bg-warning {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+}
+
+.bg-danger {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+}
+
+.text-white {
+  color: white;
+}
+
+.text-dark {
+  color: #2d3748;
+}
+
+.text-gray {
+  color: #718096;
+}
+
+.text-light-gray {
+  color: #a0aec0;
+}
+
+.text-primary {
+  color: #667eea;
+}
+
+.text-secondary {
+  color: #764ba2;
+}
+
+.border-glass {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.rounded {
+  border-radius: 0.5rem;
+}
+
+.rounded-lg {
+  border-radius: 0.75rem;
+}
+
+.rounded-xl {
+  border-radius: 1rem;
+}
+
+.rounded-2xl {
+  border-radius: 1.5rem;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.shadow-glass {
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Responsive sizing for mobile */
+.h-8 {
+  height: 2rem;
+}
+
+.h-10 {
+  height: 2.5rem;
+}
+
+.h-12 {
+  height: 3rem;
+}
+
+.h-14 {
+  height: 3.5rem;
+}
+
+.h-16 {
+  height: 4rem;
+}
+
+.h-20 {
+  height: 5rem;
+}
+
+.w-8 {
+  width: 2rem;
+}
+
+.w-10 {
+  width: 2.5rem;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.w-14 {
+  width: 3.5rem;
+}
+
+.w-16 {
+  width: 4rem;
+}
+
+.w-20 {
+  width: 5rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.select-none {
+  user-select: none;
+}
+
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+.transform {
+  transform: translateZ(0);
+}
+
+.scale-95 {
+  transform: scale(0.95);
+}
+
+.scale-105 {
+  transform: scale(1.05);
+}
+
+/* Touch animations */
+.active\:scale-95:active {
+  transform: scale(0.95);
+}
+
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+/* Modern tab navigation */
+.tab-container {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 0.5rem;
+  margin: 1rem;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.tab-button {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 1rem;
+  font-size: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-button.active {
+  background: rgba(255, 255, 255, 0.9);
+  color: #667eea;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.tab-button:not(.active) {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.tab-button:not(.active):hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.tab-button:active {
+  transform: scale(0.98);
+}
+
+/* Header styles */
+.app-header {
+  padding: 2rem 1rem 1rem;
+  text-align: center;
+  background: transparent;
+}
+
+.app-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.app-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0.5rem 0 0;
+  font-weight: 300;
+}
+
+.glass-header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1.5rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.header-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+}
+
+.header-date {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.header-button {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.header-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* Fixed top progress header */
+.fixed-progress-header {
+  position: absolute; /* Изменяем на absolute */
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 40;
+  padding: 1rem;
+}
+
+/* Медиа-запросы для широких экранов */
+@media (min-width: 481px) {
+  body {
+    padding: 0; /* Убираем отступы */
+  }
+  
+  .app-container {
+    width: 100vw; /* Полная ширина */
+    height: 100vh; /* Полная высота */
+    border-radius: 0; /* Без закруглений */
+    box-shadow: none; /* Убираем тень */
+  }
+  
+  .fixed-progress-header {
+    border-radius: 0;
+  }
+  
+  .bottom-navigation-fixed {
+    border-radius: 0;
+    background: #667eea; /* Сохраняем непрозрачный фон */
+  }
+}
+
+@media (min-width: 768px) {
+  .app-container {
+    width: 100vw; /* Полная ширина на всех экранах */
+  }
+}
+
+/* Modern exercise counter cards */
+.exercise-item {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.exercise-item:last-child {
+  margin-bottom: 0; /* Убираем отступ у последнего элемента */
+}
+
+.exercise-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+}
+
+.exercise-info {
+  flex: 1;
+}
+
+.exercise-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.25rem 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.exercise-points {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-weight: 500;
+}
+
+.exercise-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.exercise-count {
+  font-size: 2rem;
+  font-weight: 900;
+  color: white;
+  min-width: 4rem;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.counter-button {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  border: none;
+  font-weight: 700;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.counter-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.counter-button:active:not(:disabled) {
+  transform: scale(0.85);
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.counter-increment {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+}
+
+.counter-increment:hover:not(:disabled) {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+}
+
+.counter-decrement {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+  color: white;
+}
+
+.counter-decrement:hover:not(:disabled) {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(255, 154, 158, 0.4);
+}
+
+/* Modern progress bar */
+.progress-container {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  margin: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.progress-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.progress-percentage {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 0.75rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  transition: width 0.5s ease;
+  border-radius: 9999px;
+  position: relative;
+}
+
+.progress-segment {
+  height: 100%;
+  transition: width 0.5s ease;
+  border-radius: 0;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.progress-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+}
+
+.progress-current {
+  color: white;
+  font-weight: 600;
+}
+
+.progress-goal {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+/* Modern card styles */
+.goal-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.goal-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0.5rem 0 0;
+  font-weight: 500;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 1.5rem;
+  max-width: 28rem;
+  width: 100%;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  margin-bottom: 2rem;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.5rem;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.form-select option {
+  background: #1f2937;
+  color: white;
+}
+
+/* Button styles */
+.btn {
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.w-3 {
+  width: 0.75rem;
+}
+
+.h-3 {
+  height: 0.75rem;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+/* Chart container */
+.chart-container {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+/* Bottom navigation */
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1rem;
+  z-index: 50;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.bottom-navigation-fixed {
+  position: absolute; /* Изменяем на absolute */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #667eea; /* Непрозрачный фон вместо прозрачного */
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1rem;
+  z-index: 50;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.bottom-tab-container {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%; /* Полная ширина */
+  margin: 0;
+}
+
+.bottom-tab-button {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 1rem;
+  border: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  transition: all 0.3s ease;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  min-height: 4rem;
+}
+
+.bottom-tab-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.bottom-tab-active {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Exercise card improvements */
+.exercise-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  transition: all 0.3s ease;
+}
+
+.exercise-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.4);
+}
+
+.exercise-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.exercise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.exercise-info {
+  flex: 1;
+}
+
+.exercise-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.exercise-subtitle {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.exercise-points {
+  text-align: right;
+  margin-left: 1rem;
+}
+
+.exercise-points-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  margin: 0;
+}
+
+.exercise-points-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+/* Content padding for bottom navigation */
+.main-content {
+  padding-bottom: 6rem;
+}
+
+.main-content-new {
+  flex: 1; /* Занимает оставшееся пространство */
+  overflow-y: auto; /* Включаем вертикальный скролл */
+  overflow-x: hidden; /* Скрываем горизонтальный скролл */
+  padding: 6rem 1rem 5rem 1rem; /* Уменьшаем отступы */
+  /* Скрываем полосы прокрутки */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Скрываем полосы прокрутки для WebKit браузеров */
+.main-content-new::-webkit-scrollbar {
+  display: none;
+}
+
+/* Workout content */
+.workout-content {
+  padding-top: 1rem;
+  height: 100%; /* Фиксированная высота */
+  overflow-y: auto; /* Включаем вертикальный скролл */
+  overflow-x: hidden; /* Скрываем горизонтальный скролл */
+  /* Скрываем полосы прокрутки */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Скрываем полосы прокрутки для workout-content */
+.workout-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Settings content */
+.settings-content {
+  width: 100%; /* Используем всю ширину */
+  margin: 0 auto;
+  padding: 1rem;
+  height: 100%;
+  overflow-y: auto; /* Включаем вертикальный скролл */
+  overflow-x: hidden; /* Скрываем горизонтальный скролл */
+  /* Скрываем полосы прокрутки */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Скрываем полосы прокрутки для settings-content */
+.settings-content::-webkit-scrollbar {
+  display: none;
+}
+
+.settings-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.settings-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.settings-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-weight: 300;
+}
+
+.settings-form {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+/* Compact progress bar for fixed header */
+.fixed-progress-header .progress-container {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.fixed-progress-header .progress-title {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.fixed-progress-header .progress-percentage {
+  font-size: 0.875rem;
+}
+
+/* Save notification */
+.save-notification {
+  position: fixed;
+  top: 2rem;
+  right: 1rem;
+  background: rgba(16, 185, 129, 0.95);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+  backdrop-filter: blur(10px);
+  z-index: 60;
+  animation: slideInRight 0.3s ease-out, fadeOut 0.3s ease-in 2.7s forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Header title for non-workout pages */
+.header-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+}
+
+/* Stats content container */
+.stats-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto; /* Включаем вертикальный скролл */
+  overflow-x: hidden; /* Скрываем горизонтальный скролл */
+  padding: 1rem;
+  /* Скрываем полосы прокрутки */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Скрываем полосы прокрутки для stats-content */
+.stats-content::-webkit-scrollbar {
+  display: none;
+}

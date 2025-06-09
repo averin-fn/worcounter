@@ -1,0 +1,171 @@
+/* Mobile-first responsive styles for Workout Counter */
+
+.mobile-container {
+  max-width: 448px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 24px;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+.btn-primary:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.counter-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.counter-btn-add {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.counter-btn-add:hover {
+  background-color: #bbf7d0;
+}
+
+.counter-btn-remove {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.counter-btn-remove:hover {
+  background-color: #fecaca;
+}
+
+.counter-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background-color: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #3b82f6;
+  transition: width 0.5s ease;
+}
+
+.progress-fill.success {
+  background-color: #10b981;
+}
+
+.goal-card {
+  background: #dbeafe;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.goal-card.success {
+  background: #dcfce7;
+}
+
+.goal-card.rest {
+  background: #f3f4f6;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.tab-nav {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 64px;
+  z-index: 30;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  background: none;
+  border-bottom: 2px solid transparent;
+  color: #6b7280;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-button.active {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+}
+
+.header {
+  background: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  body {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  .mobile-container {
+    padding: 0 12px;
+  }
+  
+  .card {
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+}
+
+/* Touch improvements */
+button, .counter-btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Smooth animations */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
