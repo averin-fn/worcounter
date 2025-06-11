@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Target } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import { UserSettings } from '../types';
