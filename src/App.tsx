@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, BarChart3, Dumbbell, Calendar, History } from 'lucide-react';
+import { Settings, BarChart3, Dumbbell, History } from 'lucide-react';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
@@ -50,8 +50,7 @@ function App() {
   }, 0);
   const isGoalReached = currentPoints >= settings.currentGoal;
 
-  const stats = getStatsForPeriod(records, settings, 14);
-  // Функция для показа уведомлений
+  const stats = getStatsForPeriod(records, settings, 14);  // Функция для показа уведомлений
   const showNotification = React.useCallback((message: string, type: 'success' | 'delete' | 'goal-reached' | 'info', duration: number = 2500) => {
     // Очищаем предыдущий таймер
     if (notificationTimer) {
@@ -62,8 +61,19 @@ function App() {
     setSaveNotification(message);
     
     const timer = setTimeout(() => {
-      setSaveNotification(null);
-      setNotificationTimer(null);
+      // Добавляем класс для анимации исчезновения
+      const notification = document.querySelector('.save-notification');
+      if (notification) {
+        notification.classList.add('fade-out');
+        // Ждем завершения анимации перед удалением
+        setTimeout(() => {
+          setSaveNotification(null);
+          setNotificationTimer(null);
+        }, 300); // Длительность анимации fade-out
+      } else {
+        setSaveNotification(null);
+        setNotificationTimer(null);
+      }
     }, duration);
     
     setNotificationTimer(timer);
@@ -82,7 +92,6 @@ function App() {
       setExerciseCounts({});
     }
   }, [todayRecord]);
-
   // Helper function to get the last training day
   const getLastTrainingDay = React.useCallback((): string | null => {
     const sortedRecords = [...records].sort((a, b) => b.date.localeCompare(a.date));
@@ -94,6 +103,16 @@ function App() {
     }
     return null;
   }, [records, settings, todayStr]);
+
+  // Helper function to get the result of the last training day
+  const getLastTrainingDayResult = React.useCallback((): boolean | undefined => {
+    const lastTrainingDay = getLastTrainingDay();
+    if (lastTrainingDay) {
+      const lastRecord = records.find(r => r.date === lastTrainingDay);
+      return lastRecord?.goalReached;
+    }
+    return undefined;
+  }, [getLastTrainingDay, records]);
 
   // Check for goal adjustment on app load and day change
   useEffect(() => {
@@ -213,8 +232,7 @@ function App() {
               <h1 style={{ color: '#111827', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
                 Тренировка
               </h1>
-            </div>
-            <div className="header-right">
+            </div>            <div className="header-right">
               <button
                 onClick={() => setActiveTab('settings')}
                 className="header-settings-btn"
@@ -222,12 +240,6 @@ function App() {
               >
                 <Settings size={20} />
               </button>
-              <div className="header-date">
-                <Calendar size={16} style={{ color: '#6b7280', marginRight: '0.25rem' }} />
-                <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>
-                  {format(today, 'dd.MM', { locale: ru })}
-                </span>
-              </div>
             </div>
           </div>
         ) : activeTab === 'stats' ? (
@@ -292,13 +304,13 @@ function App() {
 
       {/* Content */}
       <main className="main-content-new">        {activeTab === 'workout' ? (
-          <div className="page-content">
-            {/* Next Training Info - всегда показываем первым когда нужно */}
+          <div className="page-content">            {/* Next Training Info - всегда показываем первым когда нужно */}
             {((isTodayTrainingDay && isGoalReached) || !isTodayTrainingDay) && (
               <NextTrainingInfo
                 settings={settings}
                 isTrainingDay={isTodayTrainingDay}
                 goalReached={isGoalReached}
+                lastTrainingDayGoalReached={getLastTrainingDayResult()}
               />
             )}
             

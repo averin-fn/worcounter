@@ -9,12 +9,14 @@ interface NextTrainingInfoProps {
   settings: UserSettings;
   isTrainingDay: boolean;
   goalReached: boolean;
+  lastTrainingDayGoalReached?: boolean;
 }
 
 const NextTrainingInfo: React.FC<NextTrainingInfoProps> = ({ 
   settings, 
   isTrainingDay, 
-  goalReached 
+  goalReached,
+  lastTrainingDayGoalReached
 }) => {
   // Показываем информацию только если:
   // 1. Сегодня не тренировочный день
@@ -31,10 +33,11 @@ const NextTrainingInfo: React.FC<NextTrainingInfoProps> = ({
     : !isTrainingDay 
       ? getNextTrainingDay(today, settings)
       : today;
-
   const nextGoal = isTrainingDay && goalReached 
     ? calculateNewGoal(settings.currentGoal, true)
-    : settings.currentGoal;
+    : !isTrainingDay && lastTrainingDayGoalReached !== undefined
+      ? calculateNewGoal(settings.currentGoal, lastTrainingDayGoalReached)
+      : settings.currentGoal;
 
   const formatNextTrainingDate = (date: Date) => {
     const today = new Date();
