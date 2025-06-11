@@ -4,11 +4,11 @@ import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
 import StatsChart from './components/StatsChart';
-import StatsSummary from './components/StatsSummary';
 import DayProgressSummary from './components/DayProgressSummary';
 import QuickActions from './components/QuickActions';
-import Achievements from './components/Achievements';
 import ThemeSwitcher from './components/ThemeSwitcher';
+import StreakCard from './components/StreakCard';
+import ExerciseStats from './components/ExerciseStats';
 
 
 import { EXERCISES } from './constants';
@@ -153,37 +153,10 @@ function App() {
   const handleThemeToggle = () => {
     setIsDarkTheme(!isDarkTheme);
   };
-
   const handleQuickAdd = (exerciseId: string, count: number) => {
     const currentCount = exerciseCounts[exerciseId] || 0;
     handleExerciseCountChange(exerciseId, currentCount + count);
   };
-
-  // Calculate achievements data
-  const totalWorkouts = records.length;
-  const streakDays = calculateStreakDays(records, settings);
-
-  function calculateStreakDays(records: WorkoutRecord[], settings: UserSettings): number {
-    if (records.length === 0) return 0;
-    
-    const sortedRecords = [...records].sort((a, b) => b.date.localeCompare(a.date));
-    let streak = 0;
-    let currentDate = new Date();
-    
-    for (const record of sortedRecords) {
-      const recordDate = new Date(record.date);
-      const diffDays = Math.floor((currentDate.getTime() - recordDate.getTime()) / (1000 * 60 * 60 * 24));
-      
-      if (diffDays <= streak * settings.trainingFrequency + settings.trainingFrequency - 1) {
-        streak++;
-        currentDate = recordDate;
-      } else {
-        break;
-      }
-    }
-    
-    return streak;
-  }
 
   return (
     <div className={`app-container ${isDarkTheme ? 'dark-theme' : ''}`}>
@@ -261,15 +234,10 @@ function App() {
                 <p>Следующая тренировка запланирована на завтра</p>
               </div>
             )}
-          </div>
-        ) : activeTab === 'stats' ? (
-          <div className="stats-content">
-            <Achievements
-              totalPoints={currentPoints}
-              streakDays={streakDays}
-              totalWorkouts={totalWorkouts}
-            />
-            <StatsSummary stats={stats} />
+          </div>        ) : activeTab === 'stats' ? (
+          <div className="stats-content" style={{ padding: '0.5rem', gap: '0.5rem', display: 'flex', flexDirection: 'column' }}>
+            <StreakCard stats={stats} />
+            <ExerciseStats stats={stats} records={records} />
             <StatsChart data={stats} />
           </div>
         ) : (

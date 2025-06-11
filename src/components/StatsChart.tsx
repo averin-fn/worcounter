@@ -9,61 +9,88 @@ interface StatsChartProps {
 }
 
 const StatsChart: React.FC<StatsChartProps> = ({ data }) => {
-  const chartData = data.map(stat => ({
+  // Берем только последние 7 дней
+  const last7Days = data.slice(-7);
+  
+  const chartData = last7Days.map(stat => ({
     date: format(parseISO(stat.date), 'dd.MM', { locale: ru }),
     points: stat.points,
     goal: stat.goal,
     goalReached: stat.goalReached,
     isTrainingDay: stat.isTrainingDay
   }));
+
   return (
-    <div className="progress-container">
-      <h3 className="progress-title mb-4">Статистика за последние дни</h3>
-      
-      <div className="chart-container">
-        <ResponsiveContainer width="100%" height={200}>
-          <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-            <XAxis 
-              dataKey="date" 
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 12, fill: '#6B7280' }}
-            />
-            <YAxis 
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 12, fill: '#6B7280' }}
-            />
-            <Bar dataKey="points" radius={[4, 4, 0, 0]}>
-              {chartData.map((entry, index) => (
-                <Cell 
-                  key={`cell-${index}`} 
-                  fill={
-                    !entry.isTrainingDay 
-                      ? '#E5E7EB' 
-                      : entry.goalReached 
-                        ? '#10B981' 
-                        : '#3B82F6'
-                  } 
-                />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-      
-      <div className="flex justify-center mt-4 space-x-4 text-sm">
-        <div className="flex items-center">
-          <div className="w-3 h-3 bg-green-500 rounded mr-2"></div>
-          <span style={{ color: 'rgba(255, 255, 255, 0.8)' }}>Цель достигнута</span>
+    <div className="day-progress-summary">
+      <div className="progress-section">
+        <div className="progress-header">
+          <h3 className="progress-title">График за 7 дней</h3>
         </div>
-        <div className="flex items-center">
-          <div className="w-3 h-3 bg-blue-500 rounded mr-2"></div>
-          <span style={{ color: 'rgba(255, 255, 255, 0.8)' }}>Тренировочный день</span>
+          <div style={{ marginTop: '0.75rem', height: '200px' }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+              <XAxis 
+                dataKey="date" 
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 10, fill: '#6B7280' }}
+              />
+              <YAxis 
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 10, fill: '#6B7280' }}
+                width={25}
+              />
+              <Bar dataKey="points" radius={[2, 2, 0, 0]}>
+                {chartData.map((entry, index) => (
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={
+                      !entry.isTrainingDay 
+                        ? '#E5E7EB' 
+                        : entry.goalReached 
+                          ? '#10B981' 
+                          : '#3B82F6'
+                    } 
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
-        <div className="flex items-center">
-          <div className="w-3 h-3 bg-gray-300 rounded mr-2"></div>
-          <span style={{ color: 'rgba(255, 255, 255, 0.8)' }}>День отдыха</span>
+        
+        <div className="day-summary-section" style={{ marginTop: '0.5rem' }}>
+          <div className="day-summary-grid">
+            <div className="day-summary-item">
+              <div 
+                className="day-summary-icon"
+                style={{ backgroundColor: '#10B981' }}
+              />
+              <div className="day-summary-info">
+                <span className="day-summary-name">Цель достигнута</span>
+              </div>
+            </div>
+            
+            <div className="day-summary-item">
+              <div 
+                className="day-summary-icon"
+                style={{ backgroundColor: '#3B82F6' }}
+              />
+              <div className="day-summary-info">
+                <span className="day-summary-name">Тренировочный день</span>
+              </div>
+            </div>
+            
+            <div className="day-summary-item">
+              <div 
+                className="day-summary-icon"
+                style={{ backgroundColor: '#E5E7EB' }}
+              />
+              <div className="day-summary-info">
+                <span className="day-summary-name">День отдыха</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
