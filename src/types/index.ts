@@ -16,6 +16,16 @@ export interface WorkoutRecord {
   goalReached: boolean;
 }
 
+export interface ExerciseHistoryEntry {
+  id: string;
+  exerciseId: string;
+  exerciseName: string;
+  count: number;
+  points: number;
+  timestamp: string;
+  date: string;
+}
+
 export interface UserSettings {
   trainingFrequency: number; // дни между тренировками
   currentGoal: number;

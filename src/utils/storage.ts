@@ -1,10 +1,11 @@
-import { UserSettings, WorkoutRecord, DayStats } from '../types';
+import { UserSettings, WorkoutRecord, DayStats, ExerciseHistoryEntry } from '../types';
 import { DEFAULT_SETTINGS } from '../constants';
 import { addDays, differenceInDays, format, parseISO } from 'date-fns';
 
 const STORAGE_KEYS = {
   SETTINGS: 'workout_settings',
-  RECORDS: 'workout_records'
+  RECORDS: 'workout_records',
+  EXERCISE_HISTORY: 'exercise_history'
 };
 
 export const loadSettings = (): UserSettings => {
@@ -69,4 +70,49 @@ export const getStatsForPeriod = (records: WorkoutRecord[], settings: UserSettin
   }
   
   return stats;
+};
+
+// Exercise History functions
+export const loadExerciseHistory = (): ExerciseHistoryEntry[] => {
+  const stored = localStorage.getItem(STORAGE_KEYS.EXERCISE_HISTORY);
+  return stored ? JSON.parse(stored) : [];
+};
+
+export const saveExerciseHistory = (history: ExerciseHistoryEntry[]): void => {
+  localStorage.setItem(STORAGE_KEYS.EXERCISE_HISTORY, JSON.stringify(history));
+};
+
+export const addExerciseToHistory = (
+  exerciseId: string, 
+  exerciseName: string, 
+  count: number, 
+  points: number
+): void => {
+  const history = loadExerciseHistory();
+  const now = new Date();
+  
+  const entry: ExerciseHistoryEntry = {
+    id: `${exerciseId}_${now.getTime()}`,
+    exerciseId,
+    exerciseName,
+    count,
+    points,
+    timestamp: now.toISOString(),
+    date: format(now, 'yyyy-MM-dd')
+  };
+  
+  history.unshift(entry); // Добавляем в начало массива
+  
+  // Ограничиваем историю последними 100 записями
+  if (history.length > 100) {
+    history.splice(100);
+  }
+  
+  saveExerciseHistory(history);
+};
+
+export const removeExerciseFromHistory = (entryId: string): void => {
+  const history = loadExerciseHistory();
+  const updatedHistory = history.filter(entry => entry.id !== entryId);
+  saveExerciseHistory(updatedHistory);
 };

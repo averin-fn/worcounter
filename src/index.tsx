@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './workout.css';
+import './styles.css';
 import App from './App';
 
 const root = ReactDOM.createRoot(
