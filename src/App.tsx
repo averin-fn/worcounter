@@ -10,6 +10,7 @@ import ThemeSwitcher from './components/ThemeSwitcher';
 import StreakCard from './components/StreakCard';
 import ExerciseStats from './components/ExerciseStats';
 import ExerciseHistory from './components/ExerciseHistory';
+import NextTrainingInfo from './components/NextTrainingInfo';
 
 
 import { EXERCISES } from './constants';
@@ -23,7 +24,8 @@ import {
   calculateNewGoal,
   loadExerciseHistory,
   addExerciseToHistory,
-  removeExerciseFromHistory
+  removeExerciseFromHistory,
+  getNextTrainingDay
 } from './utils/storage';
 
 type TabType = 'workout' | 'stats' | 'history' | 'settings';
@@ -42,12 +44,12 @@ function App() {
   const today = new Date();
   const todayStr = format(today, 'yyyy-MM-dd');
   const isTodayTrainingDay = isTrainingDay(today, settings);
-  
-  const todayRecord = records.find(r => r.date === todayStr);
+    const todayRecord = records.find(r => r.date === todayStr);
   const currentPoints = Object.entries(exerciseCounts).reduce((total, [exerciseId, count]) => {
     const exercise = EXERCISES.find(e => e.id === exerciseId);
     return total + (exercise ? exercise.points * count : 0);
   }, 0);
+  const isGoalReached = currentPoints >= settings.currentGoal;
 
   const stats = getStatsForPeriod(records, settings, 14);
   // Функция для показа уведомлений
@@ -266,9 +268,17 @@ function App() {
       </header>
 
       {/* Content */}
-      <main className="main-content-new">
-        {activeTab === 'workout' ? (
+      <main className="main-content-new">        {activeTab === 'workout' ? (
           <div className="workout-content">
+            {/* Next Training Info - всегда показываем первым когда нужно */}
+            {((isTodayTrainingDay && isGoalReached) || !isTodayTrainingDay) && (
+              <NextTrainingInfo
+                settings={settings}
+                isTrainingDay={isTodayTrainingDay}
+                goalReached={isGoalReached}
+              />
+            )}
+            
             {isTodayTrainingDay && (
               <div className="space-y-4">
                 {/* Day Progress Summary - Combined progress and day stats */}
@@ -278,21 +288,13 @@ function App() {
                   exerciseCounts={exerciseCounts}
                   isTrainingDay={isTodayTrainingDay}
                 />
-                
-                {/* Quick Actions */}
+                  {/* Quick Actions */}
                 <QuickActions
                   onQuickAdd={handleQuickAdd}
                 />
               </div>
             )}
-            
-            {!isTodayTrainingDay && (
-              <div className="rest-day-message">
-                <h2>Сегодня день отдыха</h2>
-                <p>Следующая тренировка запланирована на завтра</p>
-              </div>
-            )}
-          </div>        ) : activeTab === 'stats' ? (
+          </div>) : activeTab === 'stats' ? (
           <div className="stats-content" style={{ padding: '0.5rem', gap: '0.5rem', display: 'flex', flexDirection: 'column' }}>
             <StreakCard stats={stats} />
             <ExerciseStats stats={stats} records={records} />
