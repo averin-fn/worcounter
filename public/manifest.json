@@ -17,11 +17,10 @@
       "type": "image/png",
       "sizes": "512x512"
     }
-  ],
-  "start_url": ".",
+  ],  "start_url": ".",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#3B82F6",
+  "theme_color": "#F9FAFB",
   "background_color": "#F9FAFB",
   "categories": ["health", "fitness", "lifestyle"]
 }

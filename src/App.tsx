@@ -19,7 +19,8 @@ import {
   loadRecords, 
   saveRecords,
   isTrainingDay,
-  getStatsForPeriod
+  getStatsForPeriod,
+  calculateNewGoal
 } from './utils/storage';
 
 type TabType = 'workout' | 'stats' | 'settings';
@@ -44,6 +45,12 @@ function App() {
 
   const stats = getStatsForPeriod(records, settings, 14);
 
+  // Settings save handler
+  const handleSettingsSave = React.useCallback((newSettings: UserSettings) => {
+    setSettings(newSettings);
+    saveSettings(newSettings);
+  }, []);
+
   useEffect(() => {
     if (todayRecord) {
       setExerciseCounts(todayRecord.exercises);
@@ -51,6 +58,53 @@ function App() {
       setExerciseCounts({});
     }
   }, [todayRecord]);
+
+  // Helper function to get the last training day
+  const getLastTrainingDay = React.useCallback((): string | null => {
+    const sortedRecords = [...records].sort((a, b) => b.date.localeCompare(a.date));
+    for (const record of sortedRecords) {
+      const recordDate = new Date(record.date);
+      if (isTrainingDay(recordDate, settings) && record.date !== todayStr) {
+        return record.date;
+      }
+    }
+    return null;
+  }, [records, settings, todayStr]);
+
+  // Check for goal adjustment on app load and day change
+  useEffect(() => {
+    const checkGoalAdjustment = () => {
+      const lastTrainingDay = getLastTrainingDay();
+      
+      if (lastTrainingDay) {
+        const lastRecord = records.find(r => r.date === lastTrainingDay);
+        const lastGoalAdjustmentKey = `goal_adjusted_${lastTrainingDay}`;
+        const hasAdjusted = localStorage.getItem(lastGoalAdjustmentKey);
+        
+        // Only adjust if this is a new training day and we haven't adjusted for the last training day yet
+        if (isTodayTrainingDay && !hasAdjusted && lastRecord) {
+          const newGoal = calculateNewGoal(settings.currentGoal, lastRecord.goalReached);
+          
+          if (newGoal !== settings.currentGoal) {
+            const newSettings = {
+              ...settings,
+              currentGoal: newGoal
+            };
+            handleSettingsSave(newSettings);
+            
+            // Mark that we've adjusted for this training day
+            localStorage.setItem(lastGoalAdjustmentKey, 'true');
+            
+            // Show notification about goal change
+            const changeType = lastRecord.goalReached ? 'увеличена' : 'уменьшена';
+            const changePercent = lastRecord.goalReached ? '+10%' : '-5%';
+            setSaveNotification(`🎯 Цель ${changeType} (${changePercent}): ${newGoal} очков`);
+            setTimeout(() => setSaveNotification(null), 4000);
+          }
+        }
+      }
+    };    checkGoalAdjustment();
+  }, [settings, records, isTodayTrainingDay, getLastTrainingDay, handleSettingsSave, setSaveNotification, todayStr]);
 
 
 
@@ -94,13 +148,7 @@ function App() {
         setSaveNotification('🎉 Цель достигнута!');
         setTimeout(() => setSaveNotification(null), 3000);
       }
-    }
-  };
-
-  const handleSettingsSave = (newSettings: UserSettings) => {
-    setSettings(newSettings);
-    saveSettings(newSettings);
-  };
+    }  };
 
   const handleThemeToggle = () => {
     setIsDarkTheme(!isDarkTheme);

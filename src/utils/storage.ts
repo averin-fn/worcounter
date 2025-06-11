@@ -41,9 +41,11 @@ export const getNextTrainingDay = (currentDate: Date, settings: UserSettings): D
 
 export const calculateNewGoal = (currentGoal: number, goalReached: boolean): number => {
   if (goalReached) {
-    return Math.min(currentGoal + 20, 500); // увеличиваем на 20, максимум 500
+    // Увеличиваем на 10%, максимум 500
+    return Math.min(Math.round(currentGoal * 1.1), 500);
   } else {
-    return Math.max(currentGoal - 10, 50); // уменьшаем на 10, минимум 50
+    // Уменьшаем на 5%, минимум 50
+    return Math.max(Math.round(currentGoal * 0.95), 50);
   }
 };
 
