@@ -140,18 +140,17 @@ function App() {
   return (
     <div className={`app-container ${isDarkTheme ? 'dark-theme' : ''}`}>
       {/* Fixed Top Header */}
-      <header className="fixed-header">
-        {activeTab === 'workout' ? (
+      <header className="fixed-header">        {activeTab === 'workout' ? (
           <div className="header-title">
             <div className="header-left">
-              <Dumbbell size={24} style={{ color: 'white' }} />
-              <h1 style={{ color: 'white', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
+              <Dumbbell size={24} style={{ color: '#111827' }} />
+              <h1 style={{ color: '#111827', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
                 Тренировка
               </h1>
             </div>
             <div className="header-date">
-              <Calendar size={20} style={{ color: 'white', marginRight: '0.5rem' }} />
-              <span style={{ color: 'white', fontSize: '0.9rem' }}>
+              <Calendar size={20} style={{ color: '#6b7280', marginRight: '0.5rem' }} />
+              <span style={{ color: '#6b7280', fontSize: '0.9rem' }}>
                 {format(today, 'dd.MM.yyyy', { locale: ru })}
               </span>
             </div>
@@ -159,14 +158,14 @@ function App() {
         ) : activeTab === 'stats' ? (
           <div className="header-title">
             <div className="header-left">
-              <BarChart3 size={24} style={{ color: 'white' }} />
-              <h1 style={{ color: 'white', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
+              <BarChart3 size={24} style={{ color: '#111827' }} />
+              <h1 style={{ color: '#111827', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
                 Статистика
               </h1>
             </div>
             <div className="header-date">
-              <Calendar size={20} style={{ color: 'white', marginRight: '0.5rem' }} />
-              <span style={{ color: 'white', fontSize: '0.9rem' }}>
+              <Calendar size={20} style={{ color: '#6b7280', marginRight: '0.5rem' }} />
+              <span style={{ color: '#6b7280', fontSize: '0.9rem' }}>
                 {format(today, 'dd.MM.yyyy', { locale: ru })}
               </span>
             </div>
@@ -174,8 +173,8 @@ function App() {
         ) : (
           <div className="header-title">
             <div className="header-left">
-              <Settings size={24} style={{ color: 'white' }} />
-              <h1 style={{ color: 'white', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
+              <Settings size={24} style={{ color: '#111827' }} />
+              <h1 style={{ color: '#111827', margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
                 Настройки
               </h1>
             </div>

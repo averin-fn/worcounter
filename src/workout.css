@@ -32,7 +32,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #f8f9fa;
   min-height: 100vh;
   overflow-x: hidden;
   overflow-y: hidden; /* Убираем общий скролл */
@@ -57,8 +57,7 @@ body {
 .app-container {
   height: 100vh; /* Фиксированная высота */
   width: 100vw; /* Полная ширина экрана */
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
+  background: #ffffff;
   border-radius: 0; /* Убираем border-radius */
   margin: 0; /* Убираем все отступы */
   position: relative;
@@ -270,16 +269,15 @@ body {
 }
 
 .text-white {
-  color: white;
+  color: #111827;
 }
 
 .text-dark {
-  color: #1a202c;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  color: #111827;
 }
 
 .text-gray {
-  color: #4a5568;
+  color: #6b7280;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -477,14 +475,13 @@ body {
 .app-title {
   font-size: 2rem;
   font-weight: 800;
-  color: white;
+  color: #111827;
   margin: 0;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .app-subtitle {
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #6b7280;
   margin: 0.5rem 0 0;
   font-weight: 300;
 }
@@ -502,8 +499,7 @@ body {
 .header-title {
   font-size: 1.5rem;
   font-weight: 800;
-  color: white;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  color: #111827;
   margin: 0;
   display: flex;
   justify-content: center;
@@ -514,7 +510,7 @@ body {
 
 .header-date {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #6b7280;
   margin: 0;
 }
 
@@ -523,18 +519,17 @@ body {
   height: 3rem;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  background: #f3f4f6;
+  color: #374151;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 }
 
 .header-button:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: #e5e7eb;
   transform: scale(1.05);
 }
 
@@ -544,8 +539,8 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
   z-index: 40;
   padding: 1rem;
 }
@@ -633,13 +628,12 @@ body {
 
 /* Modern exercise counter cards */
 .exercise-item {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  border-radius: 1.5rem;
+  background: #ffffff;
+  border-radius: 1rem;
   padding: 1.5rem;
   margin-bottom: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -653,8 +647,8 @@ body {
 }
 
 .exercise-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .exercise-info {
@@ -664,14 +658,13 @@ body {
 .exercise-name {
   font-size: 1.25rem;
   font-weight: 700;
-  color: white;
+  color: #111827;
   margin: 0 0 0.25rem 0;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .exercise-points {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #6b7280;
   margin: 0;
   font-weight: 500;
 }
@@ -685,15 +678,13 @@ body {
 .exercise-count {
   font-size: 2rem;
   font-weight: 900;
-  color: white;
+  color: #111827;
   min-width: 4rem;
   text-align: center;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  background: rgba(255, 255, 255, 0.1);
+  background: #f3f4f6;
   border-radius: 1rem;
   padding: 0.5rem;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  border: 2px solid #e5e7eb;
 }
 
 .counter-button {
@@ -728,34 +719,35 @@ body {
 }
 
 .counter-increment {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: #10b981;
   color: white;
 }
 
 .counter-increment:hover:not(:disabled) {
   transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+  background: #059669;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .counter-decrement {
-  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+  background: #ef4444;
   color: white;
 }
 
 .counter-decrement:hover:not(:disabled) {
   transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(255, 154, 158, 0.4);
+  background: #dc2626;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Modern progress bar */
 .progress-container {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  border-radius: 1.5rem;
+  background: #ffffff;
+  border-radius: 1rem;
   padding: 1.5rem;
   margin: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .progress-header {
@@ -768,21 +760,20 @@ body {
 .progress-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: white;
+  color: #111827;
   margin: 0;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .progress-percentage {
   font-size: 1rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  color: #6b7280;
 }
 
 .progress-bar {
   width: 100%;
   height: 0.75rem;
-  background: rgba(255, 255, 255, 0.2);
+  background: #f3f4f6;
   border-radius: 9999px;
   overflow: hidden;
   position: relative;
@@ -790,7 +781,7 @@ body {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  background: #3b82f6;
   transition: width 0.5s ease;
   border-radius: 9999px;
   position: relative;
@@ -809,7 +800,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
   animation: shimmer 2s infinite;
 }
 
@@ -826,30 +817,29 @@ body {
 }
 
 .progress-current {
-  color: white;
+  color: #111827;
   font-weight: 600;
 }
 
 .progress-goal {
-  color: rgba(255, 255, 255, 0.8);
+  color: #6b7280;
   font-weight: 500;
 }
 
 /* Modern card styles */
 .goal-card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  border-radius: 1.5rem;
+  background: #ffffff;
+  border-radius: 1rem;
   padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   text-align: center;
   transition: all 0.3s ease;
 }
 
 .goal-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Stats grid */
@@ -861,12 +851,11 @@ body {
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  border-radius: 1.5rem;
+  background: #ffffff;
+  border-radius: 1rem;
   padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   text-align: center;
   transition: all 0.3s ease;
   position: relative;
@@ -874,8 +863,8 @@ body {
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .stat-card::before {
@@ -885,20 +874,19 @@ body {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  background: #3b82f6;
 }
 
 .stat-value {
   font-size: 2rem;
   font-weight: 800;
-  color: white;
+  color: #111827;
   margin: 0;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .stat-label {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #6b7280;
   margin: 0.5rem 0 0;
   font-weight: 500;
 }
@@ -920,14 +908,13 @@ body {
 }
 
 .modal-content {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  border-radius: 1.5rem;
+  background: #ffffff;
+  border-radius: 1rem;
   max-width: 28rem;
   width: 100%;
   padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   animation: slideIn 0.3s ease-out;
 }
 
@@ -949,9 +936,8 @@ body {
 .modal-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: white;
+  color: #111827;
   margin: 0;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* Form styles */
@@ -963,7 +949,7 @@ body {
   display: block;
   font-size: 0.875rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
+  color: #374151;
   margin-bottom: 0.5rem;
 }
 
@@ -971,30 +957,29 @@ body {
 .form-select {
   width: 100%;
   padding: 0.875rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #d1d5db;
   border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: #ffffff;
+  color: #111827;
   font-size: 1rem;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 }
 
 .form-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: #9ca3af;
 }
 
 .form-input:focus,
 .form-select:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+  border-color: #3b82f6;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .form-select option {
-  background: #1f2937;
-  color: white;
+  background: #ffffff;
+  color: #111827;
 }
 
 /* Button styles */
@@ -1012,25 +997,26 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: #3b82f6;
   color: white;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  background: #2563eb;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #f9fafb;
+  color: #374151;
+  border: 1px solid #e5e7eb;
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  background: #f3f4f6;
+  color: #111827;
 }
 
 .btn:active {
@@ -1080,11 +1066,11 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  background: #667eea; /* Непрозрачный фон вместо прозрачного */
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  background: #ffffff; /* Непрозрачный фон вместо прозрачного */
+  border-top: 1px solid #e5e7eb;
   padding: 1rem;
   z-index: 50;
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.1), 0 -1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .bottom-tab-container {
@@ -1097,7 +1083,7 @@ body {
 .bottom-tab-button {
   flex: 1;
   padding: 0.75rem;
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   border: none;
   font-weight: 600;
   font-size: 0.875rem;
@@ -1109,47 +1095,46 @@ body {
   gap: 0.25rem;
   transition: all 0.3s ease;
   background: transparent;
-  color: rgba(255, 255, 255, 0.6);
+  color: #6b7280;
   min-height: 4rem;
 }
 
 .bottom-tab-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.8);
+  background: #f3f4f6;
+  color: #374151;
 }
 
 .bottom-tab-active {
-  background: rgba(255, 255, 255, 0.2) !important;
+  background: #3b82f6 !important;
   color: white !important;
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 /* Exercise card improvements */
 .exercise-card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  border-radius: 1.5rem;
+  background: #ffffff;
+  border-radius: 1rem;
   padding: 1.5rem;
   margin-bottom: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   transition: all 0.3s ease;
 }
 
 .exercise-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .exercise-icon {
   width: 3rem;
   height: 3rem;
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
   flex-shrink: 0;
 }
 
@@ -1167,14 +1152,13 @@ body {
 .exercise-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: white;
+  color: #111827;
   margin: 0 0 0.5rem 0;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .exercise-subtitle {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: #6b7280;
   margin: 0;
 }
 
@@ -1186,14 +1170,13 @@ body {
 .exercise-points-value {
   font-size: 1.75rem;
   font-weight: 800;
-  color: white;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  color: #111827;
   margin: 0;
 }
 
 .exercise-points-label {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: #6b7280;
   margin: 0;
 }
 
@@ -1205,11 +1188,10 @@ body {
   justify-content: center;
   padding: 3rem 2rem;
   text-align: center;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  border-radius: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  background: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   margin: 2rem 0; /* Removed horizontal margins */
 }
 
@@ -1221,25 +1203,22 @@ body {
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 1rem 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .rest-day-message p {
-  color: rgba(255, 255, 255, 0.9);
+  color: #6b7280;
   font-size: 1rem;
   margin: 0;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   font-weight: 500;
 }
 
 /* Quick Actions Styles */
 .quick-actions {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  border-radius: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  background: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   padding: 1.5rem;
   margin: 1rem 0;
 }
@@ -1259,24 +1238,22 @@ body {
   font-size: 1.2rem;
   font-weight: 700;
   margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .workout-timer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: #6b7280;
   font-weight: 600;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .timer-btn {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: #10b981;
   color: white;
   border: none;
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 600;
@@ -1540,26 +1517,25 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
   border-radius: 2rem;
   padding: 0.5rem 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 }
 
 .theme-switcher:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  background: #f3f4f6;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .theme-switcher-track {
   position: relative;
   width: 50px;
   height: 26px;
-  background: rgba(255, 255, 255, 0.2);
+  background: #e5e7eb;
   border-radius: 13px;
   transition: all 0.3s ease;
 }
@@ -1569,14 +1545,14 @@ body {
   top: 3px;
   width: 20px;
   height: 20px;
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: #3b82f6;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .theme-switcher-thumb.light-position {
@@ -1585,17 +1561,17 @@ body {
 
 .theme-switcher-thumb.dark-position {
   left: 27px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #6366f1;
 }
 
 .theme-switcher-label {
-  color: #1e3a8a;
+  color: #374151;
   font-weight: 600;
   font-size: 0.875rem;
 }
 
 .theme-switcher.dark .theme-switcher-label {
-  color: #e2e8f0;
+  color: #374151;
 }
 
 /* Swipe Exercise Card Styles */
@@ -1753,19 +1729,18 @@ body {
 
 /* Day Progress Summary Styles */
 .day-progress-summary {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  border-radius: 1.25rem;
+  background: #ffffff;
+  border-radius: 1rem;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   transition: all 0.3s ease;
 }
 
 .day-progress-summary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .progress-section {
@@ -1782,35 +1757,34 @@ body {
 .progress-section .progress-title {
   font-size: 1rem;
   font-weight: 600;
-  color: white;
+  color: #111827;
   margin: 0;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .progress-section .progress-percentage {
   font-size: 0.875rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  color: #6b7280;
 }
 
 .progress-section .progress-bar {
   width: 100%;
   height: 8px;
-  background: rgba(255, 255, 255, 0.2);
+  background: #e5e7eb;
   border-radius: 9999px;
   overflow: hidden;
   position: relative;
 }
 
 .day-summary-section {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid #e5e7eb;
   padding-top: 1.25rem;
 }
 
 .day-summary-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
+  color: #6b7280;
   margin: 0 0 1rem 0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -1828,14 +1802,14 @@ body {
   align-items: center;
   gap: 0.75rem;
   padding: 0.625rem 0.75rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: #f9fafb;
   border-radius: 0.625rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #e5e7eb;
   transition: all 0.2s ease;
 }
 
 .day-summary-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: #f3f4f6;
   transform: translateX(4px);
 }
 
@@ -1857,20 +1831,20 @@ body {
 .day-summary-name {
   font-size: 0.8rem;
   font-weight: 600;
-  color: white;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  color: #111827;
+  margin: 0;
 }
 
 .day-summary-count {
   font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: #6b7280;
   font-weight: 500;
 }
 
 .day-summary-empty {
   text-align: center;
   padding: 1rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: #9ca3af;
   font-style: italic;
   font-size: 0.8rem;
 }
@@ -1880,14 +1854,14 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: #f3f4f6;
   border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #e5e7eb;
 }
 
 .day-summary-total-label {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #374151;
   font-weight: 600;
 }
 
@@ -1904,7 +1878,7 @@ body {
 }
 
 .goal-status-section {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid #e5e7eb;
   padding-top: 1rem;
   margin-top: 1rem;
 }
@@ -1914,9 +1888,9 @@ body {
   align-items: center;
   gap: 0.75rem;
   padding: 0.875rem 1rem;
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(22, 163, 74, 0.15) 100%);
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
   border-radius: 0.75rem;
-  border: 1px solid rgba(34, 197, 94, 0.4);
+  border: 1px solid #16a34a;
   box-shadow: 0 4px 15px rgba(34, 197, 94, 0.2);
 }
 
@@ -1927,8 +1901,7 @@ body {
 .goal-reached-text {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  color: #15803d;
 }
 
 /* Dark theme adjustments for DayProgressSummary */
@@ -2122,18 +2095,17 @@ body {
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 1rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 }
 
 .exercise-card-new:hover {
-  transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  background: #f9fafb;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .exercise-icon-new {
@@ -2148,15 +2120,14 @@ body {
 }
 
 .exercise-name-new {
-  color: white;
+  color: #111827;
   font-size: 1rem;
   font-weight: 600;
   margin: 0 0 0.25rem 0;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .exercise-points-new {
-  color: rgba(255, 255, 255, 0.8);
+  color: #6b7280;
   font-size: 0.875rem;
   margin: 0;
 }
@@ -2307,11 +2278,10 @@ body {
 
 /* Exercise Add Block Styles for QuickActions */
 .exercise-add-block {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  border-radius: 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  background: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   padding: 1.25rem;
   margin: 0.75rem 0 0.5rem 0; /* Removed horizontal margins, reduced bottom margin */
   transition: all 0.3s ease;
@@ -2331,7 +2301,7 @@ body {
 
 .exercise-add-block:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 35px 0 rgba(31, 38, 135, 0.4);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .exercise-add-header {
@@ -2339,7 +2309,7 @@ body {
 }
 
 .exercise-add-header h3 {
-  color: #ffffff;
+  color: #111827;
   font-size: 1.2rem;
   font-weight: 600;
   margin: 0;
@@ -2361,13 +2331,12 @@ body {
   justify-content: center;
   gap: 0.5rem;
   padding: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #e5e7eb;
   border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
+  background: #f9fafb;
+  color: #111827;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
   min-height: 4rem;
@@ -2379,9 +2348,9 @@ body {
 
 .exercise-btn:hover {
   transform: translateY(-1px);
-  border-color: rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border-color: #d1d5db;
+  background: #f3f4f6;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .exercise-btn:active {
@@ -2436,22 +2405,21 @@ body {
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #e5e7eb;
   border-radius: 0.875rem;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: #f9fafb;
+  color: #111827;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 }
 
 .count-quick-btn:hover {
   transform: translateY(-1px);
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
+  background: #f3f4f6;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .count-quick-btn.active {
@@ -2510,14 +2478,13 @@ body {
 .count-input {
   width: 4.5rem;
   height: 2.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #e5e7eb;
   border-radius: 0.875rem;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: #ffffff;
+  color: #111827;
   text-align: center;
   font-size: 1.1rem;
   font-weight: 700;
-  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 }
 
@@ -2535,13 +2502,13 @@ body {
 
 .count-input:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+  border-color: #3b82f6;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .count-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: #9ca3af;
 }
 
 /* Add Summary Styles */
@@ -2551,10 +2518,9 @@ body {
   justify-content: space-between;
   gap: 0.875rem;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
   border-radius: 1rem;
-  backdrop-filter: blur(15px);
 }
 
 .add-preview {
@@ -2565,15 +2531,14 @@ body {
 }
 
 .add-exercise-name {
-  color: white;
+  color: #111827;
   font-size: 1rem;
   font-weight: 700;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   margin: 0;
 }
 
 .add-calculation {
-  color: rgba(255, 255, 255, 0.8);
+  color: #6b7280;
   font-size: 0.875rem;
   font-weight: 500;
   margin: 0;
