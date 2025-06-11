@@ -24,8 +24,7 @@ import {
   calculateNewGoal,
   loadExerciseHistory,
   addExerciseToHistory,
-  removeExerciseFromHistory,
-  getNextTrainingDay
+  removeExerciseFromHistory
 } from './utils/storage';
 
 type TabType = 'workout' | 'stats' | 'history' | 'settings';
@@ -215,13 +214,23 @@ function App() {
                 Тренировка
               </h1>
             </div>
-            <div className="header-date">
-              <Calendar size={20} style={{ color: '#6b7280', marginRight: '0.5rem' }} />
-              <span style={{ color: '#6b7280', fontSize: '0.9rem' }}>
-                {format(today, 'dd.MM.yyyy', { locale: ru })}
-              </span>
+            <div className="header-right">
+              <button
+                onClick={() => setActiveTab('settings')}
+                className="header-settings-btn"
+                title="Настройки"
+              >
+                <Settings size={20} />
+              </button>
+              <div className="header-date">
+                <Calendar size={16} style={{ color: '#6b7280', marginRight: '0.25rem' }} />
+                <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>
+                  {format(today, 'dd.MM', { locale: ru })}
+                </span>
+              </div>
             </div>
-          </div>        ) : activeTab === 'stats' ? (
+          </div>
+        ) : activeTab === 'stats' ? (
           <div className="header-title">
             <div className="header-left">
               <BarChart3 size={24} style={{ color: '#111827' }} />
@@ -229,11 +238,14 @@ function App() {
                 Статистика
               </h1>
             </div>
-            <div className="header-date">
-              <Calendar size={20} style={{ color: '#6b7280', marginRight: '0.5rem' }} />
-              <span style={{ color: '#6b7280', fontSize: '0.9rem' }}>
-                {format(today, 'dd.MM.yyyy', { locale: ru })}
-              </span>
+            <div className="header-right">
+              <button
+                onClick={() => setActiveTab('settings')}
+                className="header-settings-btn"
+                title="Настройки"
+              >
+                <Settings size={20} />
+              </button>
             </div>
           </div>
         ) : activeTab === 'history' ? (
@@ -244,14 +256,16 @@ function App() {
                 История
               </h1>
             </div>
-            <div className="header-date">
-              <Calendar size={20} style={{ color: '#6b7280', marginRight: '0.5rem' }} />
-              <span style={{ color: '#6b7280', fontSize: '0.9rem' }}>
-                {format(today, 'dd.MM.yyyy', { locale: ru })}
-              </span>
+            <div className="header-right">
+              <button
+                onClick={() => setActiveTab('settings')}
+                className="header-settings-btn"
+                title="Настройки"
+              >
+                <Settings size={20} />
+              </button>
             </div>
-          </div>
-        ) : (
+          </div>        ) : (
           <div className="header-title">
             <div className="header-left">
               <Settings size={24} style={{ color: '#111827' }} />
@@ -259,17 +273,26 @@ function App() {
                 Настройки
               </h1>
             </div>
-            <ThemeSwitcher 
-              isDarkTheme={isDarkTheme}
-              onThemeToggle={handleThemeToggle}
-            />
+            <div className="header-right">
+              <button
+                onClick={() => setActiveTab('settings')}
+                className={`header-settings-btn ${activeTab === 'settings' ? 'active' : ''}`}
+                title="Настройки"
+              >
+                <Settings size={20} />
+              </button>
+              <ThemeSwitcher 
+                isDarkTheme={isDarkTheme}
+                onThemeToggle={handleThemeToggle}
+              />
+            </div>
           </div>
         )}
       </header>
 
       {/* Content */}
       <main className="main-content-new">        {activeTab === 'workout' ? (
-          <div className="workout-content">
+          <div className="page-content">
             {/* Next Training Info - всегда показываем первым когда нужно */}
             {((isTodayTrainingDay && isGoalReached) || !isTodayTrainingDay) && (
               <NextTrainingInfo
@@ -294,17 +317,18 @@ function App() {
                 />
               </div>
             )}
-          </div>) : activeTab === 'stats' ? (
-          <div className="stats-content" style={{ padding: '0.5rem', gap: '0.5rem', display: 'flex', flexDirection: 'column' }}>
+          </div>
+        ) : activeTab === 'stats' ? (
+          <div className="page-content">
             <StreakCard stats={stats} />
             <ExerciseStats stats={stats} records={records} />
             <StatsChart data={stats} />
-          </div>        ) : activeTab === 'history' ? (
-          <div className="history-content" style={{ padding: '0.5rem' }}>
-            <ExerciseHistory history={exerciseHistory} onRemoveEntry={handleRemoveHistoryEntry} />
           </div>
-        ) : (
-          <div className="settings-content">
+        ) : activeTab === 'history' ? (
+          <div className="page-content">
+            <ExerciseHistory history={exerciseHistory} onRemoveEntry={handleRemoveHistoryEntry} />
+          </div>        ) : (
+          <div className="page-content">
             <div className="settings-header">
               <h2 className="settings-title">Настройки</h2>
               <p className="settings-subtitle">
@@ -376,9 +400,8 @@ function App() {
             </div>
           </div>
         )}
-      </main>
-
-      {/* Bottom Navigation */}      <nav className="bottom-navigation-fixed">
+      </main>      {/* Bottom Navigation */}
+      <nav className="bottom-navigation-fixed">
         <div className="bottom-tab-container">
           <button
             onClick={() => setActiveTab('workout')}
@@ -401,15 +424,8 @@ function App() {
             <History size={24} />
             <span>История</span>
           </button>
-          <button
-            onClick={() => setActiveTab('settings')}
-            className={`bottom-tab-button ${activeTab === 'settings' ? 'bottom-tab-active' : ''}`}
-          >
-            <Settings size={24} />
-            <span>Настройки</span>
-          </button>
         </div>
-      </nav>      {/* Save Notification */}
+      </nav>{/* Save Notification */}
       {saveNotification && (
         <div className={`save-notification ${notificationType}`}>
           {saveNotification}
