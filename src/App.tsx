@@ -11,6 +11,7 @@ import ExerciseStats from "./components/ExerciseStats";
 import ExerciseHistory from "./components/ExerciseHistory";
 import NextTrainingInfo from "./components/NextTrainingInfo";
 import ExerciseRecords from "./components/ExerciseRecords";
+import SeriesTimer from "./components/SeriesTimer";
 
 import { EXERCISES } from "./constants";
 import {
@@ -18,6 +19,7 @@ import {
   WorkoutRecord,
   ExerciseHistoryEntry,
   ExerciseRecord,
+  SeriesState,
 } from "./types";
 import {
   loadSettings,
@@ -28,10 +30,14 @@ import {
   getStatsForPeriod,
   calculateNewGoal,
   loadExerciseHistory,
-  addExerciseToHistoryWithRecord,
-  removeExerciseFromHistory,  loadExerciseRecords,
+  addExerciseToHistoryWithSeries,
+  removeExerciseFromHistory,
+  loadExerciseRecords,
   recalculateExerciseRecord,
   checkWillBeRecord,
+  initializeSeries,
+  updateSeries,
+  endSeries,
 } from "./utils/storage";
 
 type TabType = "workout" | "stats" | "history" | "settings";
@@ -55,6 +61,7 @@ function App() {
   );
   const [notificationTimer, setNotificationTimer] =
     useState<NodeJS.Timeout | null>(null);
+  const [seriesState, setSeriesState] = useState<SeriesState>(initializeSeries());
 
   const today = new Date();
   const todayStr = format(today, "yyyy-MM-dd");
@@ -194,42 +201,61 @@ function App() {
     todayStr,
     showNotification,
   ]);
-
   const handleExerciseCountChange = (exerciseId: string, count: number) => {
     const prevCount = exerciseCounts[exerciseId] || 0;
     const newCounts = {
       ...exerciseCounts,
       [exerciseId]: count,
     };
-    setExerciseCounts(newCounts); // Добавляем в историю только если количество увеличилось
+    setExerciseCounts(newCounts); 
+      // Добавляем в историю только если количество увеличилось
     if (count > prevCount) {
       const exercise = EXERCISES.find((e) => e.id === exerciseId);
       if (exercise) {
         const addedCount = count - prevCount;
-        const basePoints = addedCount * exercise.points; // Используем новую функцию с проверкой рекордов
-        const { points: finalPoints, isRecord } =
-          addExerciseToHistoryWithRecord(
+        const basePoints = addedCount * exercise.points;
+        
+        // Логирование состояния серии до обновления
+        console.log('Before series update:', seriesState);
+        
+        // Обновляем состояние серии
+        const newSeriesState = updateSeries(seriesState);
+        setSeriesState(newSeriesState);
+        
+        // Логирование состояния серии после обновления
+        console.log('After series update:', newSeriesState);
+        
+        // Используем новую функцию с учетом серий
+        const { points: finalPoints, isRecord, seriesMultiplier } =
+          addExerciseToHistoryWithSeries(
             exerciseId,
             exercise.name,
-            addedCount, // Количество добавленных упражнений за раз (для проверки рекорда)
-            basePoints
+            addedCount,
+            basePoints,
+            newSeriesState
           );
 
-        setExerciseHistory(loadExerciseHistory()); // Обновляем состояние истории
-        setExerciseRecords(loadExerciseRecords()); // Обновляем состояние рекордов
+        setExerciseHistory(loadExerciseHistory());
+        setExerciseRecords(loadExerciseRecords());
 
-        // Показываем уведомление с учетом рекорда
-        if (isRecord) {
-          showNotification(
-            `🏆 НОВЫЙ РЕКОРД! +${addedCount} ${exercise.name} (+${finalPoints} очков)`,
-            "goal-reached"
-          );
+        // Формируем уведомление с учетом множителей
+        let message = '';
+        if (isRecord && seriesMultiplier > 1) {
+          message = `🏆 НОВЫЙ РЕКОРД! +${addedCount} ${exercise.name} (+${finalPoints} очков) `;
+          message += `<span class="series-multiplier">🔥 x${seriesMultiplier.toFixed(1)}</span>`;
+        } else if (isRecord) {
+          message = `🏆 НОВЫЙ РЕКОРД! +${addedCount} ${exercise.name} (+${finalPoints} очков)`;
+        } else if (seriesMultiplier > 1) {
+          message = `✅ +${addedCount} ${exercise.name} (+${finalPoints} очков) `;
+          message += `<span class="series-multiplier">🔥 x${seriesMultiplier.toFixed(1)}</span>`;
         } else {
-          showNotification(
-            `✅ +${addedCount} ${exercise.name} (+${finalPoints} очков)`,
-            "success"
-          );
+          message = `✅ +${addedCount} ${exercise.name} (+${finalPoints} очков)`;
         }
+
+        showNotification(
+          message,
+          isRecord ? "goal-reached" : "success"
+        );
       }
     }
 
@@ -279,6 +305,17 @@ function App() {
     const currentCount = exerciseCounts[exerciseId] || 0;
     handleExerciseCountChange(exerciseId, currentCount + count);
   };
+  
+  // Обработчик завершения серии
+  const handleSeriesEnd = () => {
+    setSeriesState(endSeries());
+    showNotification(
+      `⏰ Серия завершена! Множитель сброшен.`,
+      "info",
+      2000
+    );
+  };
+  
   const handleRemoveHistoryEntry = (entryId: string) => {
     const history = loadExerciseHistory();
     const entryToRemove = history.find((entry) => entry.id === entryId);
@@ -477,20 +514,27 @@ function App() {
                 goalReached={isGoalReached}
                 lastTrainingDayGoalReached={getLastTrainingDayResult()}
               />
-            )}
-            {isTodayTrainingDay && (
+            )}            {isTodayTrainingDay && (
               <div className="space-y-4">
+                {/* Series Timer - показываем если серия активна */}
+                <SeriesTimer 
+                  seriesState={seriesState}
+                  onSeriesEnd={handleSeriesEnd}
+                />
+                
                 {/* Day Progress Summary - Combined progress and day stats */}
                 <DayProgressSummary
                   currentPoints={currentPoints}
                   goalPoints={settings.currentGoal}
                   exerciseCounts={exerciseCounts}
                   isTrainingDay={isTodayTrainingDay}
-                />                {/* Quick Actions */}
+                />
+                  {/* Quick Actions */}
                 <QuickActions 
                   onQuickAdd={handleQuickAdd} 
                   exerciseCounts={exerciseCounts}
                   checkWillBeRecord={checkWillBeRecord}
+                  seriesState={seriesState}
                 />
               </div>
             )}
@@ -729,12 +773,12 @@ function App() {
             <span>История</span>
           </button>
         </div>
-      </nav>
-      {/* Save Notification */}
+      </nav>      {/* Save Notification */}
       {saveNotification && (
-        <div className={`save-notification ${notificationType}`}>
-          {saveNotification}
-        </div>
+        <div 
+          className={`save-notification ${notificationType}`}
+          dangerouslySetInnerHTML={{ __html: saveNotification }}
+        />
       )}
     </div>
   );

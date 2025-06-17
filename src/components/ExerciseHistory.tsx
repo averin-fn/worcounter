@@ -137,6 +137,19 @@ const ExerciseHistory: React.FC<ExerciseHistoryProps> = ({ history, onRemoveEntr
                               }}>
                                 x{entry.multiplier}
                               </span>
+                            )}                            {entry.seriesMultiplier && entry.seriesMultiplier > 1 && (
+                              <span style={{ 
+                                marginLeft: '0.25rem',
+                                fontSize: '0.75rem',
+                                fontWeight: 'bold',
+                                background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+                                color: 'white',
+                                padding: '0.125rem 0.25rem',
+                                borderRadius: '0.25rem',
+                                textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)'
+                              }}>
+                                🔥x{entry.seriesMultiplier.toFixed(1)}
+                              </span>
                             )}
                           </span>
                           <span className="day-summary-count">

@@ -16,6 +16,15 @@ export interface WorkoutRecord {
   goalReached: boolean;
 }
 
+// Новые типы для системы серий
+export interface SeriesState {
+  isActive: boolean;
+  multiplier: number;
+  remainingTime: number;
+  exerciseCount: number;
+  startTime: number;
+}
+
 export interface ExerciseHistoryEntry {
   id: string;
   exerciseId: string;
@@ -25,7 +34,8 @@ export interface ExerciseHistoryEntry {
   timestamp: string;
   date: string;
   isRecord?: boolean; // Признак рекорда
-  multiplier?: number; // Множитель очков (например, 2x для рекорда)
+  multiplier?: number; // Множитель очков (например, 2x для рекорда или серий)
+  seriesMultiplier?: number; // Множитель за серию
 }
 
 export interface ExerciseRecord {

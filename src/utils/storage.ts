@@ -1,4 +1,4 @@
-import { UserSettings, WorkoutRecord, DayStats, ExerciseHistoryEntry, ExerciseRecord } from '../types';
+import { UserSettings, WorkoutRecord, DayStats, ExerciseHistoryEntry, ExerciseRecord, SeriesState } from '../types';
 import { DEFAULT_SETTINGS } from '../constants';
 import { addDays, differenceInDays, format, parseISO } from 'date-fns';
 
@@ -233,4 +233,160 @@ export const checkWillBeRecord = (exerciseId: string, addedCount: number): boole
   const existingRecord = records.find(r => r.exerciseId === exerciseId);
   
   return !existingRecord || addedCount > existingRecord.maxCount;
+};
+
+// Series functions
+export const calculateSeriesMultiplier = (exerciseCount: number): number => {
+  // Для первого упражнения множитель 1.0
+  // Для второго упражнения множитель 1.2
+  // Для третьего упражнения множитель 1.4
+  // И так далее, максимум 3.0
+  if (exerciseCount <= 1) return 1.0;
+  return Math.min(1.0 + (exerciseCount - 1) * 0.2, 3.0);
+};
+
+export const initializeSeries = (): SeriesState => {
+  return {
+    isActive: false,
+    multiplier: 1.0,
+    remainingTime: 0,
+    exerciseCount: 0,
+    startTime: 0
+  };
+};
+
+export const startSeries = (): SeriesState => {
+  const now = Date.now();
+  return {
+    isActive: true,
+    multiplier: 1.0,
+    remainingTime: 120, // 2 минуты
+    exerciseCount: 1,
+    startTime: now
+  };
+};
+
+export const updateSeries = (currentSeries: SeriesState): SeriesState => {
+  const now = Date.now();
+  
+  if (!currentSeries.isActive) {
+    // Начинаем новую серию - это первое упражнение
+    return {
+      isActive: true,
+      multiplier: 1.0,
+      remainingTime: 120, // 2 минуты
+      exerciseCount: 1,
+      startTime: now
+    };
+  }
+
+  const elapsedSeconds = Math.floor((now - currentSeries.startTime) / 1000);
+  const remainingTime = Math.max(0, 120 - elapsedSeconds);
+
+  if (remainingTime <= 0) {
+    // Время серии истекло, начинаем новую серию с текущего упражнения
+    return {
+      isActive: true,
+      multiplier: 1.0,
+      remainingTime: 120,
+      exerciseCount: 1,
+      startTime: now
+    };
+  }
+
+  // Продолжаем серию - увеличиваем счетчик и СБРАСЫВАЕМ таймер
+  const newExerciseCount = currentSeries.exerciseCount + 1;
+  const newMultiplier = calculateSeriesMultiplier(newExerciseCount);
+
+  return {
+    isActive: true,
+    multiplier: newMultiplier,
+    remainingTime: 120, // СБРАСЫВАЕМ таймер на 2 минуты
+    exerciseCount: newExerciseCount,
+    startTime: now // ОБНОВЛЯЕМ время начала для нового таймера
+  };
+};
+
+export const endSeries = (): SeriesState => {
+  return initializeSeries();
+};
+
+// Обновляем функцию добавления упражнений с учетом серий
+export const addExerciseToHistoryWithSeries = (
+  exerciseId: string, 
+  exerciseName: string, 
+  count: number, 
+  basePoints: number,
+  seriesState: SeriesState
+): { points: number; isRecord: boolean; seriesMultiplier: number } => {
+  const history = loadExerciseHistory();
+  const now = new Date();
+  
+  // Проверяем, будет ли это рекордом
+  const records = loadExerciseRecords();
+  const existingRecord = records.find(r => r.exerciseId === exerciseId);
+  const isNewRecord = !existingRecord || count > existingRecord.maxCount;
+  
+  // Применяем множители
+  let finalPoints = basePoints;
+  let recordMultiplier = 1;
+  let seriesMultiplier = 1;
+  
+  // Множитель за рекорд
+  if (isNewRecord) {
+    recordMultiplier = 2;
+    finalPoints *= recordMultiplier;
+  }
+  
+  // Множитель за серию
+  if (seriesState.isActive && seriesState.multiplier > 1) {
+    seriesMultiplier = seriesState.multiplier;
+    finalPoints = Math.floor(finalPoints * seriesMultiplier);
+  }
+  
+  // Логирование для отладки
+  console.log('Series state:', {
+    isActive: seriesState.isActive,
+    exerciseCount: seriesState.exerciseCount,
+    multiplier: seriesState.multiplier,
+    remainingTime: seriesState.remainingTime,
+    seriesMultiplier: seriesMultiplier
+  });
+  
+  // Создаем запись в истории
+  const entry: ExerciseHistoryEntry = {
+    id: `${exerciseId}_${now.getTime()}`,
+    exerciseId,
+    exerciseName,
+    count,
+    points: finalPoints,
+    timestamp: now.toISOString(),
+    date: format(now, 'yyyy-MM-dd'),
+    isRecord: isNewRecord,
+    multiplier: recordMultiplier,
+    seriesMultiplier: seriesMultiplier
+  };
+  
+  history.unshift(entry);
+  
+  if (history.length > 100) {
+    history.splice(100);
+  }
+  
+  saveExerciseHistory(history);
+  
+  // Обновляем рекорд, если необходимо
+  if (isNewRecord) {
+    const updatedRecords = records.filter(r => r.exerciseId !== exerciseId);
+    updatedRecords.push({
+      exerciseId,
+      exerciseName,
+      maxCount: count,
+      date: format(now, 'yyyy-MM-dd'),
+      timestamp: now.toISOString()
+    });
+    saveExerciseRecords(updatedRecords);
+  }
+  
+  return { points: finalPoints, isRecord: isNewRecord, seriesMultiplier };
 };

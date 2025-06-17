@@ -2354,6 +2354,120 @@ body {
   transform: scale(0.98);
 }
 
+/* Series Timer Styles */
+.series-timer {
+  background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+  border: 2px solid #fbbf24;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  from {
+    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+  }
+  to {
+    box-shadow: 0 8px 25px rgba(251, 191, 36, 0.5);
+  }
+}
+
+.series-timer-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.series-timer-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+}
+
+.series-timer-info {
+  flex: 1;
+}
+
+.series-timer-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #92400e;
+  margin: 0 0 0.25rem 0;
+}
+
+.series-timer-subtitle {
+  font-size: 0.8rem;
+  color: #b45309;
+  margin: 0;
+  font-weight: 500;
+}
+
+.series-timer-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 0.5rem;
+  border: 1px solid #fbbf24;
+}
+
+.series-timer-time {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #92400e;
+  font-family: 'Courier New', monospace;
+}
+
+.series-timer-progress {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.series-timer-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+  border-radius: 3px;
+  transition: width 1s ease-in-out;
+}
+
+.series-timer-hint {
+  text-align: center;
+}
+
+.series-timer-hint span {
+  font-size: 0.8rem;
+  color: #b45309;
+  font-weight: 500;
+}
+
+/* Series multiplier indicator in notifications */
+.series-multiplier {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: white;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 4px rgba(251, 191, 36, 0.3);
+  margin-left: 0.25rem;
+}
+
 /* Exercise Add Block Styles for QuickActions */
 .exercise-add-block {
   background: #ffffff;
@@ -2554,35 +2668,22 @@ body {
 }
 
 .count-input {
-  width: 4.5rem;
+  width: 4rem;
   height: 2.75rem;
   border: 1px solid #e5e7eb;
   border-radius: 0.875rem;
-  background: #ffffff;
-  color: #111827;
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   font-weight: 700;
+  color: #111827;
+  background: #ffffff;
   transition: all 0.3s ease;
-}
-
-/* Remove spinner arrows from number input */
-.count-input::-webkit-outer-spin-button,
-.count-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.count-input[type=number] {
-  -moz-appearance: textfield;
-  appearance: textfield;
 }
 
 .count-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #4facfe;
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
 }
 
 .count-input::placeholder {
@@ -2629,304 +2730,31 @@ body {
   padding: 0.75rem 1.25rem;
   border: none;
   border-radius: 0.875rem;
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-size: 0.875rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 12px rgba(34, 197, 94, 0.3);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
 .add-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 5px 18px rgba(34, 197, 94, 0.4);
-  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
 .add-btn:active {
   transform: scale(0.98);
 }
 
-/* PWA Mobile Compatibility Styles */
-
-/* Убираем выделение текста на мобильных */
-* {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+.add-btn.record-indicator {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
 }
 
-/* Разрешаем выделение только для input полей */
-input, textarea {
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-  user-select: text;
-}
-
-/* PWA Safe Area для iPhone X и новее */
-@supports (padding: env(safe-area-inset-top)) {
-  .fixed-header {
-    padding-top: max(1rem, env(safe-area-inset-top));
-  }
-  
-  .main-content-new {
-    padding-top: calc(5rem + env(safe-area-inset-top));
-    padding-bottom: calc(6rem + env(safe-area-inset-bottom));
-  }
-  
-  .bottom-navigation-fixed {
-    padding-bottom: max(1rem, env(safe-area-inset-bottom));
-  }
-}
-
-/* Улучшенная поддержка landscape режима */
-@media screen and (orientation: landscape) and (max-height: 500px) {
-  .fixed-header {
-    padding: 0.5rem 1rem;
-  }
-  
-  .main-content-new {
-    padding-top: 3.5rem;
-    padding-bottom: 4.5rem;
-  }
-  
-  .bottom-navigation-fixed {
-    height: 3.5rem;
-  }
-  
-  .bottom-tab-button {
-    flex-direction: row;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-    padding: 0.5rem;
-  }
-  
-  .bottom-tab-button span {
-    display: inline;
-  }
-}
-
-/* Улучшения для touch взаимодействий */
-.exercise-btn, .count-quick-btn, .count-control-btn, .add-btn, .install-btn {
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  min-height: 44px; /* Apple's recommended minimum touch target */
-  min-width: 44px;
-}
-
-/* Предотвращение zoom при focus на input */
-input[type="number"] {
-  font-size: 16px; /* Предотвращает zoom на iOS */
-}
-
-/* Улучшения для PWA на малых экранах */
-@media (max-width: 360px) {
-  .exercise-btn {
-    font-size: 0.85rem;
-    padding: 0.75rem 0.5rem;
-  }
-  
-  .exercise-btn-icon {
-    width: 2rem;
-    height: 2rem;
-  }
-  
-  .count-quick-btn {
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 0.9rem;
-  }
-  
-  .count-input {
-    width: 4rem;
-    height: 2.5rem;
-    font-size: 1rem;
-  }
-  
-  .add-btn {
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
-  }
-}
-
-/* Улучшения для очень маленьких экранов */
-@media (max-width: 320px) {
-  .header-left h1 {
-    font-size: 1.25rem;
-  }
-  
-  .header-date span {
-    font-size: 0.8rem;
-  }
-  
-  .exercise-buttons {
-    gap: 0.5rem;
-  }
-  
-  .exercise-btn {
-    width: calc(50% - 0.25rem);
-    font-size: 0.8rem;
-    padding: 0.6rem 0.4rem;
-  }
-  
-  .count-quick-buttons {
-    gap: 0.375rem;
-  }
-  
-  .count-quick-btn {
-    width: 2.25rem;
-    height: 2.25rem;
-    font-size: 0.85rem;
-  }
-}
-
-/* Стили для высоких экранов (например, iPhone 12 Pro Max) */
-@media (min-height: 800px) {
-  .main-content-new {
-    padding-bottom: 6rem; /* Adequate bottom padding even on tall screens with extra spacing */
-  }
-  
-  .exercise-add-block {
-    margin-bottom: 1rem; /* Reduced margin for tall screens */
-  }
-}
-
-/* Стили для коротких экранов */
-@media (max-height: 600px) and (orientation: portrait) {
-  .main-content-new {
-    padding-bottom: 5rem; /* Reduced but adequate bottom padding for short screens with extra spacing */
-  }
-  
-  .exercise-add-block {
-    margin-bottom: 0.5rem; /* Minimal margin for short screens */
-  }
-  
-  .count-selection {
-    margin-bottom: 0.5rem; /* Reduced margin */
-  }
-}
-
-/* Стили для планшетов в портретном режиме */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
-  .exercise-buttons {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  .count-selection {
-    max-width: 400px;
-    margin: 0 auto 1.25rem auto;
-  }
-  
-  .add-summary {
-    max-width: 500px;
-    margin: 0 auto;
-  }
-}
-
-/* Улучшения для accessibility */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* High contrast режим */
-@media (prefers-contrast: high) {
-  .exercise-btn {
-    border: 2px solid rgba(255, 255, 255, 0.8);
-  }
-  
-  .count-quick-btn, .count-control-btn {
-    border: 2px solid rgba(255, 255, 255, 0.6);
-  }
-}
-
-/* Улучшения для темной темы на мобильных */
-@media (prefers-color-scheme: dark) {
-  .exercise-btn {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-  }
-  
-  .count-input {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-  }
-}
-
-/* Поддержка hover только для устройств с указателем */
-@media (hover: hover) {
-  .exercise-btn:hover {
-    transform: translateY(-1px);
-  }
-  
-  .count-quick-btn:hover,
-  .count-control-btn:hover {
-    transform: scale(1.05);
-  }
-  
-  .add-btn:hover {
-    transform: translateY(-2px);
-  }
-}
-
-/* Убираем hover эффекты для touch устройств */
-@media (hover: none) {
-  .exercise-btn:hover,
-  .count-quick-btn:hover,
-  .count-control-btn:hover,
-  .add-btn:hover {
-    transform: none;
-  }
-}
-
-/* Улучшения для PWA в полноэкранном режиме */
-@media (display-mode: standalone) {
-  body {
-    background-attachment: fixed;
-  }
-  
-  .app-container {
-    height: 100vh;
-    overflow: hidden;
-  }
-  
-  /* Скрываем некоторые браузерные элементы */
-  .pwa-prompt {
-    display: none;
-  }
-}
-
-/* Улучшения для PWA в минимальном UI режиме */
-@media (display-mode: minimal-ui) {
-  .fixed-header {
-    top: env(titlebar-area-height, 0px);
-  }
-}
-
-/* Стили для notch на современных телефонах */
-@supports (padding: env(safe-area-inset-left)) {
-  .fixed-header,
-  .bottom-navigation-fixed {
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
-  }
-  
-  .main-content-new {
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
-  }
+.add-btn.record-indicator:hover {
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
 }
 
 
