@@ -1,11 +1,12 @@
-import { UserSettings, WorkoutRecord, DayStats, ExerciseHistoryEntry } from '../types';
+import { UserSettings, WorkoutRecord, DayStats, ExerciseHistoryEntry, ExerciseRecord } from '../types';
 import { DEFAULT_SETTINGS } from '../constants';
 import { addDays, differenceInDays, format, parseISO } from 'date-fns';
 
 const STORAGE_KEYS = {
   SETTINGS: 'workout_settings',
   RECORDS: 'workout_records',
-  EXERCISE_HISTORY: 'exercise_history'
+  EXERCISE_HISTORY: 'exercise_history',
+  EXERCISE_RECORDS: 'exercise_records'
 };
 
 export const loadSettings = (): UserSettings => {
@@ -115,4 +116,121 @@ export const removeExerciseFromHistory = (entryId: string): void => {
   const history = loadExerciseHistory();
   const updatedHistory = history.filter(entry => entry.id !== entryId);
   saveExerciseHistory(updatedHistory);
+};
+
+// Exercise Records functions
+export const loadExerciseRecords = (): ExerciseRecord[] => {
+  const stored = localStorage.getItem(STORAGE_KEYS.EXERCISE_RECORDS);
+  return stored ? JSON.parse(stored) : [];
+};
+
+export const saveExerciseRecords = (records: ExerciseRecord[]): void => {
+  localStorage.setItem(STORAGE_KEYS.EXERCISE_RECORDS, JSON.stringify(records));
+};
+
+export const checkAndUpdateRecord = (
+  exerciseId: string,
+  exerciseName: string,
+  count: number
+): { isNewRecord: boolean; previousRecord?: number } => {
+  const records = loadExerciseRecords();
+  const existingRecord = records.find(r => r.exerciseId === exerciseId);
+  
+  if (!existingRecord || count > existingRecord.maxCount) {
+    const previousRecord = existingRecord?.maxCount;
+    const now = new Date();
+    
+    // Обновляем или создаем новый рекорд
+    const updatedRecords = records.filter(r => r.exerciseId !== exerciseId);
+    updatedRecords.push({
+      exerciseId,
+      exerciseName,
+      maxCount: count,
+      date: format(now, 'yyyy-MM-dd'),
+      timestamp: now.toISOString()
+    });
+    
+    saveExerciseRecords(updatedRecords);
+    return { isNewRecord: true, previousRecord };
+  }
+  
+  return { isNewRecord: false };
+};
+
+export const addExerciseToHistoryWithRecord = (
+  exerciseId: string, 
+  exerciseName: string, 
+  addedCount: number, // Количество добавленных упражнений за раз
+  basePoints: number // Базовые очки за добавленные упражнения
+): { points: number; isRecord: boolean } => {
+  const { isNewRecord } = checkAndUpdateRecord(exerciseId, exerciseName, addedCount);
+  const multiplier = isNewRecord ? 2 : 1;
+  const points = basePoints * multiplier;
+  
+  const history = loadExerciseHistory();
+  const now = new Date();
+  
+  const entry: ExerciseHistoryEntry = {
+    id: `${exerciseId}_${now.getTime()}`,
+    exerciseId,
+    exerciseName,
+    count: addedCount,
+    points,
+    timestamp: now.toISOString(),
+    date: format(now, 'yyyy-MM-dd'),
+    isRecord: isNewRecord,
+    multiplier: isNewRecord ? 2 : 1
+  };
+  
+  history.unshift(entry);
+  
+  if (history.length > 100) {
+    history.splice(100);
+  }
+  
+  saveExerciseHistory(history);
+  return { points, isRecord: isNewRecord };
+};
+
+export const removeExerciseRecord = (exerciseId: string): void => {
+  const records = loadExerciseRecords();
+  const updatedRecords = records.filter(record => record.exerciseId !== exerciseId);
+  saveExerciseRecords(updatedRecords);
+};
+
+export const recalculateExerciseRecord = (exerciseId: string, exerciseName: string): void => {
+  const history = loadExerciseHistory();
+  const exerciseHistory = history.filter(entry => entry.exerciseId === exerciseId);
+  
+  if (exerciseHistory.length === 0) {
+    // Если нет записей этого упражнения, удаляем рекорд
+    removeExerciseRecord(exerciseId);
+    return;
+  }
+  
+  // Находим максимальное количество среди оставшихся записей
+  const maxEntry = exerciseHistory.reduce((max, entry) => 
+    entry.count > max.count ? entry : max
+  );
+  
+  // Обновляем рекорд
+  const records = loadExerciseRecords();
+  const updatedRecords = records.filter(r => r.exerciseId !== exerciseId);
+  
+  updatedRecords.push({
+    exerciseId,
+    exerciseName,
+    maxCount: maxEntry.count,
+    date: maxEntry.date,
+    timestamp: maxEntry.timestamp
+  });
+  
+  saveExerciseRecords(updatedRecords);
+};
+
+export const checkWillBeRecord = (exerciseId: string, addedCount: number): boolean => {
+  const records = loadExerciseRecords();
+  const existingRecord = records.find(r => r.exerciseId === exerciseId);
+  
+  return !existingRecord || addedCount > existingRecord.maxCount;
 };

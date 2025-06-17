@@ -10,9 +10,15 @@ import StreakCard from "./components/StreakCard";
 import ExerciseStats from "./components/ExerciseStats";
 import ExerciseHistory from "./components/ExerciseHistory";
 import NextTrainingInfo from "./components/NextTrainingInfo";
+import ExerciseRecords from "./components/ExerciseRecords";
 
 import { EXERCISES } from "./constants";
-import { UserSettings, WorkoutRecord, ExerciseHistoryEntry } from "./types";
+import {
+  UserSettings,
+  WorkoutRecord,
+  ExerciseHistoryEntry,
+  ExerciseRecord,
+} from "./types";
 import {
   loadSettings,
   saveSettings,
@@ -22,8 +28,10 @@ import {
   getStatsForPeriod,
   calculateNewGoal,
   loadExerciseHistory,
-  addExerciseToHistory,
-  removeExerciseFromHistory,
+  addExerciseToHistoryWithRecord,
+  removeExerciseFromHistory,  loadExerciseRecords,
+  recalculateExerciseRecord,
+  checkWillBeRecord,
 } from "./utils/storage";
 
 type TabType = "workout" | "stats" | "history" | "settings";
@@ -35,12 +43,16 @@ function App() {
   const [exerciseCounts, setExerciseCounts] = useState<{
     [key: string]: number;
   }>({});
-  const [saveNotification, setSaveNotification] = useState<string | null>(null);  const [notificationType, setNotificationType] = useState<
+  const [saveNotification, setSaveNotification] = useState<string | null>(null);
+  const [notificationType, setNotificationType] = useState<
     "success" | "delete" | "goal-reached" | "info"
   >("success");
   const [exerciseHistory, setExerciseHistory] = useState<
     ExerciseHistoryEntry[]
   >(loadExerciseHistory());
+  const [exerciseRecords, setExerciseRecords] = useState<ExerciseRecord[]>(
+    loadExerciseRecords()
+  );
   const [notificationTimer, setNotificationTimer] =
     useState<NodeJS.Timeout | null>(null);
 
@@ -189,27 +201,35 @@ function App() {
       ...exerciseCounts,
       [exerciseId]: count,
     };
-    setExerciseCounts(newCounts);
-
-    // Добавляем в историю только если количество увеличилось
+    setExerciseCounts(newCounts); // Добавляем в историю только если количество увеличилось
     if (count > prevCount) {
       const exercise = EXERCISES.find((e) => e.id === exerciseId);
       if (exercise) {
         const addedCount = count - prevCount;
-        const addedPoints = addedCount * exercise.points;
-        addExerciseToHistory(
-          exerciseId,
-          exercise.name,
-          addedCount,
-          addedPoints
-        );
-        setExerciseHistory(loadExerciseHistory()); // Обновляем состояние истории
+        const basePoints = addedCount * exercise.points; // Используем новую функцию с проверкой рекордов
+        const { points: finalPoints, isRecord } =
+          addExerciseToHistoryWithRecord(
+            exerciseId,
+            exercise.name,
+            addedCount, // Количество добавленных упражнений за раз (для проверки рекорда)
+            basePoints
+          );
 
-        // Показываем уведомление об успешном добавлении
-        showNotification(
-          `✅ +${addedCount} ${exercise.name} (+${addedPoints} очков)`,
-          "success"
-        );
+        setExerciseHistory(loadExerciseHistory()); // Обновляем состояние истории
+        setExerciseRecords(loadExerciseRecords()); // Обновляем состояние рекордов
+
+        // Показываем уведомление с учетом рекорда
+        if (isRecord) {
+          showNotification(
+            `🏆 НОВЫЙ РЕКОРД! +${addedCount} ${exercise.name} (+${finalPoints} очков)`,
+            "goal-reached"
+          );
+        } else {
+          showNotification(
+            `✅ +${addedCount} ${exercise.name} (+${finalPoints} очков)`,
+            "success"
+          );
+        }
       }
     }
 
@@ -252,23 +272,34 @@ function App() {
         // Показываем только при первом достижении цели
         showNotification("🎉 Цель достигнута!", "goal-reached", 3000);
       }
-    }  };
+    }
+  };
 
   const handleQuickAdd = (exerciseId: string, count: number) => {
     const currentCount = exerciseCounts[exerciseId] || 0;
     handleExerciseCountChange(exerciseId, currentCount + count);
-  };  const handleRemoveHistoryEntry = (entryId: string) => {
+  };
+  const handleRemoveHistoryEntry = (entryId: string) => {
     const history = loadExerciseHistory();
     const entryToRemove = history.find((entry) => entry.id === entryId);
 
     // Проверяем, что удаление разрешено только для записей текущего дня
     if (!entryToRemove || entryToRemove.date !== todayStr) {
-      showNotification('❌ Удаление разрешено только для записей текущего дня', 'delete');
+      showNotification(
+        "❌ Удаление разрешено только для записей текущего дня",
+        "delete"
+      );
       return;
     }
-
     removeExerciseFromHistory(entryId);
-    setExerciseHistory(loadExerciseHistory()); // Обновляем состояние истории
+    setExerciseHistory(loadExerciseHistory()); // Обновляем состояние истории    // Если удаляемая запись была рекордом, пересчитываем рекорд
+    if (entryToRemove.isRecord) {
+      recalculateExerciseRecord(
+        entryToRemove.exerciseId,
+        entryToRemove.exerciseName
+      );
+      setExerciseRecords(loadExerciseRecords()); // Обновляем состояние рекордов
+    }
 
     // Если удаляемая запись относится к сегодняшнему дню, обновляем счетчики
     if (entryToRemove && entryToRemove.date === todayStr) {
@@ -313,11 +344,10 @@ function App() {
         setRecords(updatedRecords);
         saveRecords(updatedRecords);
       }
-    }
-
-    if (entryToRemove) {
+    }    if (entryToRemove) {
+      const recordMessage = entryToRemove.isRecord ? " (рекорд пересчитан)" : "";
       showNotification(
-        `🗑️ Удалено: ${entryToRemove.exerciseName} (-${entryToRemove.points} очков)`,
+        `🗑️ Удалено: ${entryToRemove.exerciseName} (-${entryToRemove.points} очков)${recordMessage}`,
         "delete"
       );
     } else {
@@ -418,7 +448,8 @@ function App() {
               >
                 Настройки
               </h1>
-            </div>            <div className="header-right">
+            </div>{" "}
+            <div className="header-right">
               <button
                 onClick={() => setActiveTab("settings")}
                 className={`header-settings-btn ${
@@ -455,15 +486,19 @@ function App() {
                   goalPoints={settings.currentGoal}
                   exerciseCounts={exerciseCounts}
                   isTrainingDay={isTodayTrainingDay}
+                />                {/* Quick Actions */}
+                <QuickActions 
+                  onQuickAdd={handleQuickAdd} 
+                  exerciseCounts={exerciseCounts}
+                  checkWillBeRecord={checkWillBeRecord}
                 />
-                {/* Quick Actions */}
-                <QuickActions onQuickAdd={handleQuickAdd} />
               </div>
             )}
           </div>
         ) : activeTab === "stats" ? (
           <div className="page-content">
             <StreakCard stats={stats} />
+            <ExerciseRecords records={exerciseRecords} />
             <ExerciseStats stats={stats} records={records} />
             <StatsChart data={stats} />
           </div>
@@ -475,23 +510,25 @@ function App() {
               onRemoveEntry={handleRemoveHistoryEntry}
               currentDate={todayStr}
             />
-          </div>        ) : (
+          </div>
+        ) : (
           <div className="page-content">
             {/* Настройки тренировок */}
             <div className="day-progress-summary">
               <div className="progress-section">
                 <div className="progress-header">
                   <div className="flex items-center">
-                    <div 
+                    <div
                       style={{
-                        width: '20px',
-                        height: '20px',
-                        borderRadius: '50%',
-                        background: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginRight: '0.5rem'
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "50%",
+                        background:
+                          "linear-gradient(135deg, #f59e0b 0%, #f97316 100%)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginRight: "0.5rem",
                       }}
                     >
                       <Settings size={12} color="white" />
@@ -499,14 +536,17 @@ function App() {
                     <h3 className="progress-title">Настройки тренировок</h3>
                   </div>
                 </div>
-                
-                <div className="day-summary-section" style={{ marginTop: '0.75rem' }}>
+
+                <div
+                  className="day-summary-section"
+                  style={{ marginTop: "0.75rem" }}
+                >
                   <div className="day-summary-grid">
                     {/* Периодичность тренировок */}
                     <div className="day-summary-item">
-                      <div 
+                      <div
                         className="day-summary-icon"
-                        style={{ backgroundColor: '#3b82f6' }}
+                        style={{ backgroundColor: "#3b82f6" }}
                       />
                       <div className="day-summary-info">
                         <span className="day-summary-name">Периодичность</span>
@@ -520,13 +560,13 @@ function App() {
                             handleSettingsSave(newSettings);
                           }}
                           style={{
-                            border: 'none',
-                            background: 'transparent',
-                            color: '#1f2937',
-                            fontSize: '0.875rem',
-                            fontWeight: '600',
-                            cursor: 'pointer',
-                            outline: 'none'
+                            border: "none",
+                            background: "transparent",
+                            color: "#1f2937",
+                            fontSize: "0.875rem",
+                            fontWeight: "600",
+                            cursor: "pointer",
+                            outline: "none",
                           }}
                         >
                           <option value={1}>Каждый день</option>
@@ -536,12 +576,12 @@ function App() {
                         </select>
                       </div>
                     </div>
-                    
+
                     {/* Текущая цель */}
                     <div className="day-summary-item">
-                      <div 
+                      <div
                         className="day-summary-icon"
-                        style={{ backgroundColor: '#10b981' }}
+                        style={{ backgroundColor: "#10b981" }}
                       />
                       <div className="day-summary-info">
                         <span className="day-summary-name">Цель (очки)</span>
@@ -559,22 +599,27 @@ function App() {
                             handleSettingsSave(newSettings);
                           }}
                           style={{
-                            border: 'none',
-                            background: 'transparent',
-                            color: '#1f2937',
-                            fontSize: '0.875rem',
-                            fontWeight: '600',
-                            width: '80px',
-                            outline: 'none'
+                            border: "none",
+                            background: "transparent",
+                            color: "#1f2937",
+                            fontSize: "0.875rem",
+                            fontWeight: "600",
+                            width: "80px",
+                            outline: "none",
                           }}
                         />
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Дата начала - отдельный блок */}
-                  <div className="day-summary-total" style={{ marginTop: '1rem' }}>
-                    <span className="day-summary-total-label">Дата начала тренировок:</span>
+                  <div
+                    className="day-summary-total"
+                    style={{ marginTop: "1rem" }}
+                  >
+                    <span className="day-summary-total-label">
+                      Дата начала тренировок:
+                    </span>
                     <input
                       type="date"
                       value={settings.startDate}
@@ -586,35 +631,36 @@ function App() {
                         handleSettingsSave(newSettings);
                       }}
                       style={{
-                        border: '1px solid #d1d5db',
-                        borderRadius: '0.375rem',
-                        padding: '0.25rem 0.5rem',
-                        fontSize: '0.875rem',
-                        fontWeight: '600',
-                        color: '#1f2937',
-                        background: 'white'
+                        border: "1px solid #d1d5db",
+                        borderRadius: "0.375rem",
+                        padding: "0.25rem 0.5rem",
+                        fontSize: "0.875rem",
+                        fontWeight: "600",
+                        color: "#1f2937",
+                        background: "white",
                       }}
                     />
                   </div>
                 </div>
               </div>
             </div>
-            
+
             {/* Информация о приложении */}
             <div className="day-progress-summary">
               <div className="progress-section">
                 <div className="progress-header">
                   <div className="flex items-center">
-                    <div 
+                    <div
                       style={{
-                        width: '20px',
-                        height: '20px',
-                        borderRadius: '50%',
-                        background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginRight: '0.5rem'
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "50%",
+                        background:
+                          "linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginRight: "0.5rem",
                       }}
                     >
                       📱
@@ -622,13 +668,27 @@ function App() {
                     <h3 className="progress-title">О приложении</h3>
                   </div>
                 </div>
-                
-                <div className="day-summary-section" style={{ marginTop: '0.75rem' }}>
+
+                <div
+                  className="day-summary-section"
+                  style={{ marginTop: "0.75rem" }}
+                >
                   <div className="day-summary-empty">
-                    <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280', lineHeight: '1.5' }}>
-                      <strong>WorkoutCounter</strong> — приложение для отслеживания ежедневных тренировок и достижения фитнес-целей.
-                      <br /><br />
-                      Версия: 1.0.0<br />
+                    <p
+                      style={{
+                        margin: 0,
+                        fontSize: "0.875rem",
+                        color: "#6b7280",
+                        lineHeight: "1.5",
+                      }}
+                    >
+                      <strong>WorkoutCounter</strong> — приложение для
+                      отслеживания ежедневных тренировок и достижения
+                      фитнес-целей.
+                      <br />
+                      <br />
+                      Версия: 1.0.0
+                      <br />
                       Дата: {format(today, "EEEE, d MMMM yyyy", { locale: ru })}
                     </p>
                   </div>

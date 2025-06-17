@@ -112,15 +112,32 @@ const ExerciseHistory: React.FC<ExerciseHistoryProps> = ({ history, onRemoveEntr
                     const time = format(parseISO(entry.timestamp), 'HH:mm');
                     const isCurrentDay = currentDate && entry.date === currentDate;
                     
-                    return (
-                      <div key={entry.id} className="day-summary-item" style={{ position: 'relative' }}>
-                        <div 
+                    return (                      <div key={entry.id} className="day-summary-item" style={{ position: 'relative' }}>                        <div 
                           className="day-summary-icon"
-                          style={{ backgroundColor: exercise?.color || '#6b7280' }}
-                        />
-                        <div className="day-summary-info">
+                          style={{ 
+                            backgroundColor: exercise?.color || '#6b7280',
+                            position: 'relative'
+                          }}
+                        >
+                          {!entry.isRecord && exercise?.icon && (
+                            <span style={{ fontSize: '10px' }}>{exercise.icon}</span>
+                          )}
+                          {entry.isRecord && (
+                            <span style={{ fontSize: '10px' }}>🏆</span>
+                          )}
+                        </div>                        <div className="day-summary-info">
                           <span className="day-summary-name">
                             {entry.exerciseName} в {time}
+                            {entry.multiplier && entry.multiplier > 1 && (
+                              <span style={{ 
+                                marginLeft: '0.25rem',
+                                fontSize: '0.75rem',
+                                color: '#fbbf24',
+                                fontWeight: 'bold'
+                              }}>
+                                x{entry.multiplier}
+                              </span>
+                            )}
                           </span>
                           <span className="day-summary-count">
                             +{entry.count} = {entry.points} очков

@@ -4,10 +4,14 @@ import { EXERCISES } from '../constants';
 
 interface QuickActionsProps {
   onQuickAdd: (exerciseId: string, count: number) => void;
+  exerciseCounts: {[key: string]: number};
+  checkWillBeRecord: (exerciseId: string, addedCount: number) => boolean;
 }
 
 const QuickActions: React.FC<QuickActionsProps> = ({ 
-  onQuickAdd 
+  onQuickAdd,
+  exerciseCounts,
+  checkWillBeRecord
 }) => {
   const [selectedExercise, setSelectedExercise] = useState(EXERCISES[0].id);
   const [count, setCount] = useState(1);
@@ -22,9 +26,10 @@ const QuickActions: React.FC<QuickActionsProps> = ({
   };
 
   const incrementCount = () => setCount(prev => prev + 1);
-  const decrementCount = () => setCount(prev => Math.max(1, prev - 1));
-
-  const selectedExerciseData = EXERCISES.find(ex => ex.id === selectedExercise);
+  const decrementCount = () => setCount(prev => Math.max(1, prev - 1));  const selectedExerciseData = EXERCISES.find(ex => ex.id === selectedExercise);
+  const willBeRecord = checkWillBeRecord(selectedExercise, count);
+  const basePoints = count * (selectedExerciseData?.points || 0);
+  const finalPoints = willBeRecord ? basePoints * 2 : basePoints;
 
   return (
     <div className="exercise-add-block">
@@ -95,17 +100,53 @@ const QuickActions: React.FC<QuickActionsProps> = ({
       </div>
 
       {/* Summary and Add Button */}
-      <div className="add-summary">
-        <div className="add-preview">
+      <div className="add-summary">        <div className="add-preview">
           <span className="add-exercise-name">{selectedExerciseData?.name}</span>
           <span className="add-calculation">
-            {count} × {selectedExerciseData?.points} = {count * (selectedExerciseData?.points || 0)} очков
+            {willBeRecord ? (
+              <>
+                {count} × {selectedExerciseData?.points} × 2 = {finalPoints} очков
+                <span style={{ 
+                  marginLeft: '0.5rem',
+                  color: '#fbbf24',
+                  fontWeight: 'bold',
+                  fontSize: '0.8rem'
+                }}>
+                  🏆 РЕКОРД!
+                </span>
+              </>
+            ) : (
+              <>
+                {count} × {selectedExerciseData?.points} = {basePoints} очков
+              </>
+            )}
           </span>
         </div>
         
-        <button onClick={handleAdd} className="add-btn">
+        <button onClick={handleAdd} className="add-btn" style={{
+          position: 'relative'
+        }}>
           <Plus size={18} />
           Добавить
+          {willBeRecord && (
+            <span style={{
+              position: 'absolute',
+              top: '-6px',
+              right: '-6px',
+              background: '#fbbf24',
+              color: 'white',
+              borderRadius: '50%',
+              width: '20px',
+              height: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '10px',
+              fontWeight: 'bold'
+            }}>
+              x2
+            </span>
+          )}
         </button>
       </div>
     </div>

@@ -24,6 +24,16 @@ export interface ExerciseHistoryEntry {
   points: number;
   timestamp: string;
   date: string;
+  isRecord?: boolean; // Признак рекорда
+  multiplier?: number; // Множитель очков (например, 2x для рекорда)
+}
+
+export interface ExerciseRecord {
+  exerciseId: string;
+  exerciseName: string;
+  maxCount: number;
+  date: string;
+  timestamp: string;
 }
 
 export interface UserSettings {

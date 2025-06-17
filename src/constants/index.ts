@@ -5,20 +5,21 @@ export const EXERCISES: Exercise[] = [
     id: 'pullups',
     name: 'Подтягивания',
     points: 3,
-    icon: 'ChevronUp',
+    icon: '',
     color: '#FF6B6B' // Красный
-  },  {
+  },
+  {
     id: 'dips',
     name: 'Брусья',
     points: 2,
-    icon: 'ArrowUp',
+    icon: '',
     color: '#4ECDC4' // Бирюзовый
   },
   {
     id: 'pushups',
     name: 'Отжимания',
     points: 1,
-    icon: 'ArrowDown',
+    icon: '',
     color: '#45B7D1' // Синий
   }
 ];
