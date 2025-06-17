@@ -8,9 +8,10 @@ import { ru } from 'date-fns/locale';
 interface ExerciseHistoryProps {
   history: ExerciseHistoryEntry[];
   onRemoveEntry: (entryId: string) => void;
+  currentDate?: string; // Добавляем текущую дату
 }
 
-const ExerciseHistory: React.FC<ExerciseHistoryProps> = ({ history, onRemoveEntry }) => {
+const ExerciseHistory: React.FC<ExerciseHistoryProps> = ({ history, onRemoveEntry, currentDate }) => {
   // Группируем историю по дням
   const groupedHistory = history.reduce((groups, entry) => {
     const date = entry.date;
@@ -89,19 +90,29 @@ const ExerciseHistory: React.FC<ExerciseHistoryProps> = ({ history, onRemoveEntr
             const dayTotal = dayEntries.reduce((sum, entry) => sum + entry.points, 0);
             
             return (
-              <div key={date} style={{ marginBottom: '1rem' }}>
-                <div className="day-summary-total" style={{ marginBottom: '0.5rem' }}>
+              <div key={date} style={{ marginBottom: '1rem' }}>                <div className="day-summary-total" style={{ marginBottom: '0.5rem' }}>
                   <span className="day-summary-total-label">
                     {format(parseISO(date), 'dd MMMM yyyy', { locale: ru })}
+                    {currentDate && date === currentDate && (
+                      <span style={{ 
+                        marginLeft: '0.5rem', 
+                        fontSize: '0.75rem', 
+                        color: '#10b981',
+                        fontWeight: 'normal'
+                      }}>
+                        (можно удалять)
+                      </span>
+                    )}
                   </span>
                   <span className="day-summary-total-value">{dayTotal} очков</span>
                 </div>
                 
-                <div className="day-summary-grid">
-                  {dayEntries.map(entry => {
+                <div className="day-summary-grid">                  {dayEntries.map(entry => {
                     const exercise = EXERCISES.find(e => e.id === entry.exerciseId);
                     const time = format(parseISO(entry.timestamp), 'HH:mm');
-                      return (
+                    const isCurrentDay = currentDate && entry.date === currentDate;
+                    
+                    return (
                       <div key={entry.id} className="day-summary-item" style={{ position: 'relative' }}>
                         <div 
                           className="day-summary-icon"
@@ -115,33 +126,35 @@ const ExerciseHistory: React.FC<ExerciseHistoryProps> = ({ history, onRemoveEntr
                             +{entry.count} = {entry.points} очков
                           </span>
                         </div>
-                        <button
-                          onClick={() => onRemoveEntry(entry.id)}
-                          style={{
-                            position: 'absolute',
-                            right: '0.5rem',
-                            top: '50%',
-                            transform: 'translateY(-50%)',
-                            background: '#ef4444',
-                            border: 'none',
-                            borderRadius: '50%',
-                            width: '24px',
-                            height: '24px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            cursor: 'pointer',
-                            color: 'white',
-                            fontSize: '12px',
-                            opacity: 0.8,
-                            transition: 'opacity 0.2s'
-                          }}
-                          onMouseEnter={(e) => (e.target as HTMLElement).style.opacity = '1'}
-                          onMouseLeave={(e) => (e.target as HTMLElement).style.opacity = '0.8'}
-                          title="Удалить запись"
-                        >
-                          <X size={12} />
-                        </button>
+                        {isCurrentDay && (
+                          <button
+                            onClick={() => onRemoveEntry(entry.id)}
+                            style={{
+                              position: 'absolute',
+                              right: '0.5rem',
+                              top: '50%',
+                              transform: 'translateY(-50%)',
+                              background: '#ef4444',
+                              border: 'none',
+                              borderRadius: '50%',
+                              width: '24px',
+                              height: '24px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                              color: 'white',
+                              fontSize: '12px',
+                              opacity: 0.8,
+                              transition: 'opacity 0.2s'
+                            }}
+                            onMouseEnter={(e) => (e.target as HTMLElement).style.opacity = '1'}
+                            onMouseLeave={(e) => (e.target as HTMLElement).style.opacity = '0.8'}
+                            title="Удалить запись"
+                          >
+                            <X size={12} />
+                          </button>
+                        )}
                       </div>
                     );
                   })}
