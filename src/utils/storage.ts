@@ -390,3 +390,27 @@ export const addExerciseToHistoryWithSeries = (
   
   return { points: finalPoints, isRecord: isNewRecord, seriesMultiplier };
 };
+
+// Функция для расчета общих очков за день на основе истории упражнений
+export const calculateDayTotalPoints = (date: string): number => {
+  const history = loadExerciseHistory();
+  const dayEntries = history.filter(entry => entry.date === date);
+  
+  return dayEntries.reduce((total, entry) => total + entry.points, 0);
+};
+
+// Функция для расчета очков по упражнениям на основе истории
+export const calculateExercisePointsFromHistory = (history: ExerciseHistoryEntry[], date: string): {[key: string]: number} => {
+  const exercisePoints: {[key: string]: number} = {};
+  
+  const todayEntries = history.filter(entry => entry.date === date);
+  
+  todayEntries.forEach(entry => {
+    if (!exercisePoints[entry.exerciseId]) {
+      exercisePoints[entry.exerciseId] = 0;
+    }
+    exercisePoints[entry.exerciseId] += entry.points;
+  });
+  
+  return exercisePoints;
+};

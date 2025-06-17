@@ -7,26 +7,26 @@ interface DayProgressSummaryProps {
   goalPoints: number;
   exerciseCounts: {[key: string]: number};
   isTrainingDay: boolean;
+  exercisePoints?: {[key: string]: number}; // Добавляем фактические очки по упражнениям
 }
 
 const DayProgressSummary: React.FC<DayProgressSummaryProps> = ({ 
   currentPoints, 
   goalPoints, 
   exerciseCounts,
-  isTrainingDay 
-}) => {
-  // Calculate the colored progress segments based on exercise counts
+  isTrainingDay,
+  exercisePoints = {}
+}) => {  // Calculate the colored progress segments based on actual exercise points
   const getProgressSegments = () => {
-    if (!exerciseCounts || Object.keys(exerciseCounts).length === 0) {
+    if (!exercisePoints || Object.keys(exercisePoints).length === 0) {
       return [{ color: '#3b82f6', width: 0 }];
     }
 
     const segments: { color: string; width: number }[] = [];
 
     EXERCISES.forEach(exercise => {
-      const count = exerciseCounts[exercise.id] || 0;
-      if (count > 0) {
-        const points = count * exercise.points;
+      const points = exercisePoints[exercise.id] || 0;
+      if (points > 0) {
         const segmentWidth = (points / goalPoints) * 100;
         if (segmentWidth > 0) {
           segments.push({

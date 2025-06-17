@@ -21,9 +21,7 @@ import {
   ExerciseRecord,
   SeriesState,
 } from "./types";
-import {
-  loadSettings,
-  saveSettings,
+import {  loadSettings,  saveSettings,
   loadRecords,
   saveRecords,
   isTrainingDay,
@@ -38,6 +36,8 @@ import {
   initializeSeries,
   updateSeries,
   endSeries,
+  calculateDayTotalPoints,
+  calculateExercisePointsFromHistory,
 } from "./utils/storage";
 
 type TabType = "workout" | "stats" | "history" | "settings";
@@ -61,19 +61,17 @@ function App() {
   );
   const [notificationTimer, setNotificationTimer] =
     useState<NodeJS.Timeout | null>(null);
-  const [seriesState, setSeriesState] = useState<SeriesState>(initializeSeries());
-
-  const today = new Date();
+  const [seriesState, setSeriesState] = useState<SeriesState>(initializeSeries());  const today = new Date();
   const todayStr = format(today, "yyyy-MM-dd");
   const isTodayTrainingDay = isTrainingDay(today, settings);
   const todayRecord = records.find((r) => r.date === todayStr);
-  const currentPoints = Object.entries(exerciseCounts).reduce(
-    (total, [exerciseId, count]) => {
-      const exercise = EXERCISES.find((e) => e.id === exerciseId);
-      return total + (exercise ? exercise.points * count : 0);
-    },
-    0
-  );
+  
+  // Рассчитываем текущие очки на основе истории упражнений (с учетом всех множителей)
+  const currentPoints = calculateDayTotalPoints(todayStr);
+  
+  // Рассчитываем очки по каждому упражнению для корректного отображения прогресса
+  const exercisePoints = calculateExercisePointsFromHistory(exerciseHistory, todayStr);
+  
   const isGoalReached = currentPoints >= settings.currentGoal;
 
   const stats = getStatsForPeriod(records, settings, 14); // Функция для показа уведомлений
@@ -257,25 +255,18 @@ function App() {
           isRecord ? "goal-reached" : "success"
         );
       }
-    }
+    }    // Auto-save immediately
+    // Пересчитываем общие очки на основе истории упражнений (с учетом всех множителей)
+    const actualTotalPoints = calculateDayTotalPoints(todayStr);
 
-    // Auto-save immediately
-    const newTotalPoints = Object.entries(newCounts).reduce(
-      (total, [id, cnt]) => {
-        const exercise = EXERCISES.find((e) => e.id === id);
-        return total + (exercise ? exercise.points * cnt : 0);
-      },
-      0
-    );
-
-    if (newTotalPoints > 0) {
-      const goalReached = newTotalPoints >= settings.currentGoal;
+    if (actualTotalPoints > 0) {
+      const goalReached = actualTotalPoints >= settings.currentGoal;
 
       const newRecord: WorkoutRecord = {
         id: todayStr,
         date: todayStr,
         exercises: newCounts,
-        totalPoints: newTotalPoints,
+        totalPoints: actualTotalPoints,
         goalReached,
       };
 
@@ -284,14 +275,9 @@ function App() {
       updatedRecords.sort((a, b) => a.date.localeCompare(b.date));
 
       setRecords(updatedRecords);
-      saveRecords(updatedRecords); // Show goal reached notification but don't increase goal during the day
-      const prevTotalPoints = Object.entries(exerciseCounts).reduce(
-        (total, [id, cnt]) => {
-          const exercise = EXERCISES.find((e) => e.id === id);
-          return total + (exercise ? exercise.points * cnt : 0);
-        },
-        0
-      );
+      saveRecords(updatedRecords);
+        // Show goal reached notification but don't increase goal during the day  
+      const prevTotalPoints = currentPoints; // Используем старое значение currentPoints
       const wasGoalReached = prevTotalPoints >= settings.currentGoal;
 
       if (goalReached && !wasGoalReached) {
@@ -347,25 +333,18 @@ function App() {
         ...exerciseCounts,
         [entryToRemove.exerciseId]: newCount,
       };
-      setExerciseCounts(newCounts);
+      setExerciseCounts(newCounts);      // Пересчитываем общие очки и сохраняем запись дня
+      // Используем функцию расчета на основе истории упражнений
+      const actualTotalPoints = calculateDayTotalPoints(todayStr);
 
-      // Пересчитываем общие очки и сохраняем запись дня
-      const newTotalPoints = Object.entries(newCounts).reduce(
-        (total, [id, cnt]) => {
-          const exercise = EXERCISES.find((e) => e.id === id);
-          return total + (exercise ? exercise.points * cnt : 0);
-        },
-        0
-      );
-
-      if (newTotalPoints > 0) {
-        const goalReached = newTotalPoints >= settings.currentGoal;
+      if (actualTotalPoints > 0) {
+        const goalReached = actualTotalPoints >= settings.currentGoal;
 
         const newRecord: WorkoutRecord = {
           id: todayStr,
           date: todayStr,
           exercises: newCounts,
-          totalPoints: newTotalPoints,
+          totalPoints: actualTotalPoints,
           goalReached,
         };
 
@@ -521,13 +500,13 @@ function App() {
                   seriesState={seriesState}
                   onSeriesEnd={handleSeriesEnd}
                 />
-                
-                {/* Day Progress Summary - Combined progress and day stats */}
+                  {/* Day Progress Summary - Combined progress and day stats */}
                 <DayProgressSummary
                   currentPoints={currentPoints}
                   goalPoints={settings.currentGoal}
                   exerciseCounts={exerciseCounts}
                   isTrainingDay={isTodayTrainingDay}
+                  exercisePoints={exercisePoints}
                 />
                   {/* Quick Actions */}
                 <QuickActions 
