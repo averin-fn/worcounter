@@ -6,7 +6,6 @@ import { ru } from "date-fns/locale";
 import StatsChart from "./components/StatsChart";
 import DayProgressSummary from "./components/DayProgressSummary";
 import QuickActions from "./components/QuickActions";
-import ThemeSwitcher from "./components/ThemeSwitcher";
 import StreakCard from "./components/StreakCard";
 import ExerciseStats from "./components/ExerciseStats";
 import ExerciseHistory from "./components/ExerciseHistory";
@@ -36,11 +35,9 @@ function App() {
   const [exerciseCounts, setExerciseCounts] = useState<{
     [key: string]: number;
   }>({});
-  const [saveNotification, setSaveNotification] = useState<string | null>(null);
-  const [notificationType, setNotificationType] = useState<
+  const [saveNotification, setSaveNotification] = useState<string | null>(null);  const [notificationType, setNotificationType] = useState<
     "success" | "delete" | "goal-reached" | "info"
   >("success");
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [exerciseHistory, setExerciseHistory] = useState<
     ExerciseHistoryEntry[]
   >(loadExerciseHistory());
@@ -255,12 +252,8 @@ function App() {
         // Показываем только при первом достижении цели
         showNotification("🎉 Цель достигнута!", "goal-reached", 3000);
       }
-    }
-  };
+    }  };
 
-  const handleThemeToggle = () => {
-    setIsDarkTheme(!isDarkTheme);
-  };
   const handleQuickAdd = (exerciseId: string, count: number) => {
     const currentCount = exerciseCounts[exerciseId] || 0;
     handleExerciseCountChange(exerciseId, currentCount + count);
@@ -331,9 +324,8 @@ function App() {
       showNotification("🗑️ Запись удалена", "delete");
     }
   };
-
   return (
-    <div className={`app-container ${isDarkTheme ? "dark-theme" : ""}`}>
+    <div className="app-container">
       {/* Fixed Top Header */}
       <header className="fixed-header">
         {" "}
@@ -426,8 +418,7 @@ function App() {
               >
                 Настройки
               </h1>
-            </div>
-            <div className="header-right">
+            </div>            <div className="header-right">
               <button
                 onClick={() => setActiveTab("settings")}
                 className={`header-settings-btn ${
@@ -437,10 +428,6 @@ function App() {
               >
                 <Settings size={20} />
               </button>
-              <ThemeSwitcher
-                isDarkTheme={isDarkTheme}
-                onThemeToggle={handleThemeToggle}
-              />
             </div>
           </div>
         )}
@@ -488,70 +475,164 @@ function App() {
               onRemoveEntry={handleRemoveHistoryEntry}
               currentDate={todayStr}
             />
-          </div>
-        ) : (
+          </div>        ) : (
           <div className="page-content">
-            <div className="settings-header">
-              <h2 className="settings-title">Настройки</h2>
-              <p className="settings-subtitle">
-                {format(today, "EEEE, d MMMM yyyy", { locale: ru })}
-              </p>
+            {/* Настройки тренировок */}
+            <div className="day-progress-summary">
+              <div className="progress-section">
+                <div className="progress-header">
+                  <div className="flex items-center">
+                    <div 
+                      style={{
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: '0.5rem'
+                      }}
+                    >
+                      <Settings size={12} color="white" />
+                    </div>
+                    <h3 className="progress-title">Настройки тренировок</h3>
+                  </div>
+                </div>
+                
+                <div className="day-summary-section" style={{ marginTop: '0.75rem' }}>
+                  <div className="day-summary-grid">
+                    {/* Периодичность тренировок */}
+                    <div className="day-summary-item">
+                      <div 
+                        className="day-summary-icon"
+                        style={{ backgroundColor: '#3b82f6' }}
+                      />
+                      <div className="day-summary-info">
+                        <span className="day-summary-name">Периодичность</span>
+                        <select
+                          value={settings.trainingFrequency}
+                          onChange={(e) => {
+                            const newSettings = {
+                              ...settings,
+                              trainingFrequency: parseInt(e.target.value),
+                            };
+                            handleSettingsSave(newSettings);
+                          }}
+                          style={{
+                            border: 'none',
+                            background: 'transparent',
+                            color: '#1f2937',
+                            fontSize: '0.875rem',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            outline: 'none'
+                          }}
+                        >
+                          <option value={1}>Каждый день</option>
+                          <option value={2}>Через день</option>
+                          <option value={3}>Через 2 дня</option>
+                          <option value={7}>Раз в неделю</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                    {/* Текущая цель */}
+                    <div className="day-summary-item">
+                      <div 
+                        className="day-summary-icon"
+                        style={{ backgroundColor: '#10b981' }}
+                      />
+                      <div className="day-summary-info">
+                        <span className="day-summary-name">Цель (очки)</span>
+                        <input
+                          type="number"
+                          min="50"
+                          max="500"
+                          step="10"
+                          value={settings.currentGoal}
+                          onChange={(e) => {
+                            const newSettings = {
+                              ...settings,
+                              currentGoal: parseInt(e.target.value) || 100,
+                            };
+                            handleSettingsSave(newSettings);
+                          }}
+                          style={{
+                            border: 'none',
+                            background: 'transparent',
+                            color: '#1f2937',
+                            fontSize: '0.875rem',
+                            fontWeight: '600',
+                            width: '80px',
+                            outline: 'none'
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Дата начала - отдельный блок */}
+                  <div className="day-summary-total" style={{ marginTop: '1rem' }}>
+                    <span className="day-summary-total-label">Дата начала тренировок:</span>
+                    <input
+                      type="date"
+                      value={settings.startDate}
+                      onChange={(e) => {
+                        const newSettings = {
+                          ...settings,
+                          startDate: e.target.value,
+                        };
+                        handleSettingsSave(newSettings);
+                      }}
+                      style={{
+                        border: '1px solid #d1d5db',
+                        borderRadius: '0.375rem',
+                        padding: '0.25rem 0.5rem',
+                        fontSize: '0.875rem',
+                        fontWeight: '600',
+                        color: '#1f2937',
+                        background: 'white'
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <div className="settings-form">
-              <div className="form-group">
-                <label className="form-label">Периодичность тренировок</label>
-                <select
-                  value={settings.trainingFrequency}
-                  onChange={(e) => {
-                    const newSettings = {
-                      ...settings,
-                      trainingFrequency: parseInt(e.target.value),
-                    };
-                    handleSettingsSave(newSettings);
-                  }}
-                  className="form-select"
-                >
-                  <option value={1}>Каждый день</option>
-                  <option value={2}>Через день</option>
-                  <option value={3}>Через 2 дня</option>
-                  <option value={7}>Раз в неделю</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Текущая цель (очки)</label>
-                <input
-                  type="number"
-                  min="50"
-                  max="500"
-                  step="10"
-                  value={settings.currentGoal}
-                  onChange={(e) => {
-                    const newSettings = {
-                      ...settings,
-                      currentGoal: parseInt(e.target.value) || 100,
-                    };
-                    handleSettingsSave(newSettings);
-                  }}
-                  className="form-input"
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Дата начала тренировок</label>
-                <input
-                  type="date"
-                  value={settings.startDate}
-                  onChange={(e) => {
-                    const newSettings = {
-                      ...settings,
-                      startDate: e.target.value,
-                    };
-                    handleSettingsSave(newSettings);
-                  }}
-                  className="form-input"
-                />
+            
+            {/* Информация о приложении */}
+            <div className="day-progress-summary">
+              <div className="progress-section">
+                <div className="progress-header">
+                  <div className="flex items-center">
+                    <div 
+                      style={{
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: '0.5rem'
+                      }}
+                    >
+                      📱
+                    </div>
+                    <h3 className="progress-title">О приложении</h3>
+                  </div>
+                </div>
+                
+                <div className="day-summary-section" style={{ marginTop: '0.75rem' }}>
+                  <div className="day-summary-empty">
+                    <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280', lineHeight: '1.5' }}>
+                      <strong>WorkoutCounter</strong> — приложение для отслеживания ежедневных тренировок и достижения фитнес-целей.
+                      <br /><br />
+                      Версия: 1.0.0<br />
+                      Дата: {format(today, "EEEE, d MMMM yyyy", { locale: ru })}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
